@@ -65,7 +65,7 @@ class MolecularVQESimulator:
     Complete VQE simulation pipeline from CSV coordinates to results.
     """
     
-    def __init__(self, max_iterations: int = 50, tolerance: float = 1e-6):
+    def __init__(self, max_iterations: int = 10, tolerance: float = 1e-6):
         """
         Initialize the molecular VQE simulator.
         
@@ -804,7 +804,7 @@ def main():
     try:
         # Create simulator with specified parameters
         simulator = MolecularVQESimulator(
-            max_iterations=50,
+            max_iterations=10,
             tolerance=1e-6
         )
         
