@@ -1,0 +1,11 @@
+Name,SMILES,Status,Output_File,Error
+Generated_Haemophilus_influenzae_001,O=CN(O)C[C@@H](CC1CCCS1)C(=O)N1CC=C[C@H]1C(=O)Nc1ccc(F)cc1,Success,generated_haemophilus_influenzae_001_3d_coordinates.csv,
+Generated_Haemophilus_influenzae_002,C=C(C(C)C)N(C[C@H]1CN(c2ccc(N3CCN(C(C)=O)CC3)c(F)c2)C(=O)O1)C(=O)OC(C)C,Success,generated_haemophilus_influenzae_002_3d_coordinates.csv,
+Generated_Haemophilus_influenzae_003,CC[C@H]1OC(=O)C[C@@H](O)[C@H](C)[C@@H](O[C@@H]2O[C@H](C)[C@@H](O)[C@H](N(C)C)[C@H]2O)[C@@H](SCO(Cl)c2ccccc2)C[C@@H](C)C(=O)/C=C/C(C)=C/[C@@H]1CO[C@@H]1O[C@H](C)[C@@H](O)[C@@H](O)[C@H]1OC,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Haemophilus_influenzae_004,CC1(C)S[C@@H]2[C@H](NC(=O)CO(N)c3ccccc3)C(=O)N2[C@H]1C(=O)O,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Haemophilus_influenzae_005,CO[C@H]1CCCCCCCCC[C@@H](C)OC(N)(=O)CCC1(=O)O,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Haemophilus_influenzae_006,CC(=O)c1ccc(-c2cc(N)c(N3C[C@H](Cn4ccnn4)OC3=O)cc2F)cn1,Success,generated_haemophilus_influenzae_006_3d_coordinates.csv,
+Generated_Haemophilus_influenzae_007,CCCCCC(F)C(=O)N1CC(=O)/C(=C(\CCCCC(C)C)NC2CCCCC2)C1=O,Success,generated_haemophilus_influenzae_007_3d_coordinates.csv,
+Generated_Haemophilus_influenzae_008,CC[C@H]1OC(=O)[C@H](C)[C@@H](O[C@H]2C[C@@](C)(OC)C(O)(O)[C@H](C)O2)[C@H](C)[C@@H](O[C@@H]2O[C@H](C)C[C@H](N(C)C)[C@H]2O)[C@@](C)(OC/C=N/OC)C[C@@H](C)C(=O)[C@H](C)N(O)[C@]1(C)O,Success,generated_haemophilus_influenzae_008_3d_coordinates.csv,
+Generated_Haemophilus_influenzae_009,Cc1ccc(SC2CN(c3(F)c(F)cc4c(=O)c(C(=O)S)cn(C5CC5)c4c3F)C2)cc1,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Haemophilus_influenzae_010,Cl.Nc1c(F)c(N2CCC(N)(N)C2)nc2c1c(=O)c(C(=O)O)cn2C(CF)(CF)CF,Success,generated_haemophilus_influenzae_010_3d_coordinates.csv,

@@ -1,0 +1,11 @@
+Name,SMILES,Status,Output_File,Error
+Generated_Streptococcus_agalactiae_001,CCn1cc(C(N)(=O)O)c(=O)c2cc(FC)c(C3=NCCCO3)cc21,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Streptococcus_agalactiae_002,CCC(C)(C)c1cc(C(C)(C)C)cc(Cn2cN(CCN)nn2)c1.Cl,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Streptococcus_agalactiae_003,C=C(C)C(OCC1=C(C(=O)O)N2C(=O)[C@@H](NC(=C)/C(=N\O)c3cnc(N)s3)[C@H]2SC1)=OO,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Streptococcus_agalactiae_004,C/N(=C1\NC(=O)/C(=C/c2ccc(Cl)cc2)S1)c1nsc2cc(N)ccc12,Failed,,Error during conversion: Could not parse SMILES string
+Generated_Streptococcus_agalactiae_005,CCCCCC/C=C(/Cc1c(C)c(=O)c2ccccc2n1O)ON,Success,generated_streptococcus_agalactiae_005_3d_coordinates.csv,
+Generated_Streptococcus_agalactiae_006,COc1cc(/C=C/c2ccccc2C)cc(O)c1O,Success,generated_streptococcus_agalactiae_006_3d_coordinates.csv,
+Generated_Streptococcus_agalactiae_007,COC1CC(Cc2cnc(N)nc2N)CC2CCCN(O)C21,Success,generated_streptococcus_agalactiae_007_3d_coordinates.csv,
+Generated_Streptococcus_agalactiae_008,CC[C@H]1OC(=O)[C@H](C)C(=O)[C@H](C)[C@@H](O[C@@H]2O[C@H](C)C[C@H](N(C)C)[C@H]2O)[C@](C)(OC)C[C@@H](C)C(=O)[C@H](C)[C@H]2N(CCCOC(=O)Sc3ccc(C(F)(F)F)cc3)C(=O)O[C@]12C,Success,generated_streptococcus_agalactiae_008_3d_coordinates.csv,
+Generated_Streptococcus_agalactiae_009,CNC(=O)C1=C(O)[C@@H](N(C)C)[C@@H]2[C@@H](O)[C@H]3C(=C(O)[C@]2(O)C1=O)S(=O)c1c(O)cccc1[C@@H]3C.O,Success,generated_streptococcus_agalactiae_009_3d_coordinates.csv,
+Generated_Streptococcus_agalactiae_010,C=C(O)C(N)CCl,Success,generated_streptococcus_agalactiae_010_3d_coordinates.csv,
