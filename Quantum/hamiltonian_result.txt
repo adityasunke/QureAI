@@ -1,0 +1,75 @@
+=== Amoxicillin Molecule Hamiltonian Generation ===
+Note: Amoxicillin is a large molecule. Using conservative active space.
+=== Processing molecule from CSV: Database/Quantum_Database/amoxicillin_Nm.csv ===
+Reading molecular geometry from: Database/Quantum_Database/amoxicillin_Nm.csv
+CSV shape: (44, 4)
+Columns: ['Atom', 'x', 'y', 'z']
+Using atom column: atom
+Using coordinate columns: ['x', 'y', 'z']
+Parsed 44 atoms
+Molecule composition:
+  C: 16
+  H: 19
+  N: 3
+  O: 5
+  S: 1
+Building molecule with 44 atoms using sto-3g basis
+Molecule properties:
+  Total electrons: 192
+  Total orbitals: 148
+  Nuclear repulsion: 2461.878212 Hartree
+Running SCF calculation...
+SCF energy: -1533.123470 Hartree
+Large molecule detected (148 orbitals). Using conservative active space.
+Active space configuration:
+  Total orbitals: 148
+  Active orbitals: 8
+  Active electrons: (8, 8)
+  Qubits needed: 16
+Selected active orbitals: [92, 93, 94, 95, 96, 97, 98, 99]
+CASCI energy: -1528.382709 Hartree
+Extracting Hamiltonian components...
+Core energy: -1509.558560 Hartree
+Active space size: 8 orbitals
+Building molecular Hamiltonian...
+Active space: 8 orbitals, 16 qubits
+Performing Cholesky decomposition...
+Starting Cholesky decomposition with threshold 1e-06
+Cholesky decomposition completed:
+  Vectors used: 32/160
+  Max reconstruction error: 3.44e-07
+Core energy term: -1509.558560
+Adding one-electron terms...
+Added 36 one-electron terms
+Adding two-electron terms...
+Added 32 Cholesky vectors for two-electron terms
+Final Hamiltonian: 5789 terms, 16 qubits
+
+============================================================
+AMOXICILLIN MOLECULE ANALYSIS
+============================================================
+
+Molecular Properties:
+  Formula: {'C': 16, 'S': 1, 'N': 3, 'O': 5, 'H': 19}
+  Total atoms: 44
+  Total electrons: 192
+  Total orbitals: 148
+  SCF energy: -1533.123470 Hartree
+  CASCI energy: -1528.382709 Hartree
+
+Quantum Computing Requirements:
+  Active space orbitals: 8
+  Active space electrons: (8, 8)
+  Qubits needed: 16
+  Hamiltonian terms: 5789
+
+============================================================
+Hamiltonian generated successfully!
+Ready for VQE simulation on quantum computer.
+============================================================
+
+=== EXECUTION SUMMARY ===
+✓ Successfully processed amoxicillin molecule
+✓ Generated 16-qubit Hamiltonian
+✓ Hamiltonian contains 5789 Pauli terms
+✓ Ready for quantum simulation!
