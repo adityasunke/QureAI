@@ -44,7 +44,7 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
   - Selective Ratios  
   - IZ (Inhibition Zone)  
   - IC50 values  
-  - Log10CFU  
+  - Log~10~CFU  
   - AlogP  
   - Lipinski’s Rule of 5  
 
