@@ -1,13 +1,6 @@
 """
 VQE Molecular Simulator - Modular Implementation
 Integrates Hamiltonian generation, ansatz creation, and optimization for molecular VQE
-
-Usage: python vqe.py <csv_file_path>
-
-Input: CSV file with columns: Atom,x,y,z
-Output: 
-  - Energy convergence PNG plot
-  - Energy convergence CSV file
 """
 
 import numpy as np
@@ -80,15 +73,8 @@ class MolecularVQEPipeline:
         print(f"  Ansatz repetitions: {ansatz_reps}")
     
     def run_simulation(self, csv_path: str) -> VQEResult:
-        """
-        Run complete VQE simulation from CSV file.
-        
-        Args:
-            csv_path: Path to molecular coordinates CSV file
-            
-        Returns:
-            VQE simulation result
-        """
+        # Run complete VQE simulation from CSV file.
+
         print("=" * 70)
         print("MOLECULAR VQE SIMULATION")
         print("=" * 70)
@@ -179,13 +165,8 @@ class MolecularVQEPipeline:
         print(f"Energy convergence saved to: {output_filename}")
     
     def create_energy_convergence_plot(self, result: VQEResult, base_filename: str):
-        """
-        Create energy convergence visualization.
-        
-        Args:
-            result: VQE simulation result
-            base_filename: Base filename for output
-        """
+        # Create energy convergence visualization.
+
         plt.figure(figsize=(10, 6))
         
         # Plot energy convergence
