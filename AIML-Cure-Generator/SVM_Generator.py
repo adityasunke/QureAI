@@ -11,7 +11,7 @@ import numpy as np
 import random
 import logging
 
-# ML
+
 from sklearn.svm import SVC
 from sklearn.pipeline import Pipeline
 from sklearn.preprocessing import StandardScaler
@@ -19,16 +19,12 @@ from sklearn.impute import SimpleImputer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, roc_auc_score
 
-# RDKit
 from rdkit import Chem
 
-# Setup logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("DrugDiscovery")
 
-# ==============================
-# Feature Engineering
-# ==============================
+
 
 STANDARD_TYPES = ["MIC", "MBC", "IC50", "IZ", "log10cfu", "Selectivity ratio", "Ratio"]
 
@@ -40,7 +36,7 @@ def transform_row(row: pd.Series) -> np.ndarray:
         row.get("#RO5 Violations", 0),
     ]
 
-    # Encode Standard Type
+
     for stype in STANDARD_TYPES:
         if row["Standard Type"] == stype:
             val = row["Standard Value"]
@@ -66,7 +62,6 @@ def train_svm_on_dataset(df: pd.DataFrame) -> Pipeline:
     """Train an SVM pipeline on one dataset."""
     X = build_feature_matrix(df)
 
-    # Fake labels: assume top 50% effective, bottom 50% ineffective
     threshold = np.median(df["Standard Value"].dropna())
     y = (df["Standard Value"] <= threshold).astype(int)
 
@@ -178,9 +173,6 @@ def generate_new_drugs(df, model, bacterium, n_samples=20):
     return pd.DataFrame(synthetic)
 
 
-# ==============================
-# Main Pipeline
-# ==============================
 
 def main():
     datasets = {
@@ -199,7 +191,6 @@ def main():
         print(f"\nGenerated Drugs for {name}:")
         print(generated[["Name", "Smiles", "Predicted_Effectiveness"]])
 
-        # Save results
         out_file = f"generated_{name}.csv"
         generated.to_csv(out_file, index=False)
         print(f"Saved to {out_file}")
