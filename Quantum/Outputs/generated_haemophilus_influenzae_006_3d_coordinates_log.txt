@@ -1,0 +1,197 @@
+Molecular VQE Pipeline Initialized
+  Max iterations: 10
+  Ansatz repetitions: 2
+======================================================================
+MOLECULAR VQE SIMULATION
+======================================================================
+Step 1: Generating molecular Hamiltonian...
+============================================================
+GENERATING MOLECULAR HAMILTONIAN
+============================================================
+Reading molecular geometry from: Haemophilus_influenzae_3D_Coords/generated_haemophilus_influenzae_006_3d_coordinates.csv
+Parsed 46 atoms
+Molecule composition:
+  C: 19
+  F: 1
+  H: 17
+  N: 6
+  O: 3
+Building PySCF molecule...
+Molecule properties:
+  Total electrons: 206
+  Total orbitals: 162
+Running SCF calculation...
+SCF energy: -1362.569110 Hartree
+Active space: 4 orbitals, (4, 4) electrons, 8 qubits
+Setting up active space calculation...
+CASCI energy: -1360.366518 Hartree
+Building Hamiltonian: 4 orbitals, 8 qubits
+Hamiltonian built: 361 terms
+============================================================
+HAMILTONIAN GENERATION COMPLETE
+Qubits: 8
+Pauli terms: 361
+============================================================
+
+Step 2: Creating quantum ansatz...
+Creating EfficientSU2 ansatz:
+  Qubits: 8
+  Electrons: (4, 4)
+  Repetitions: 2
+Ansatz created:
+  Parameters: 48
+  Circuit depth: 21
+
+Step 3: Running VQE optimization...
+VQE Optimizer initialized:
+  Max iterations: 10
+  Tolerance: 1e-06
+  Backend: statevector_simulator
+============================================================
+VQE OPTIMIZATION
+============================================================
+Starting COBYLA optimization...
+  Parameters: 48
+  Max iterations: 10
+  Parameter bounds: [0, 2π] for all rotation gates
+============================================================
+STARTING FUNCTION EVALUATIONS:
+/home/adityasunke04/miniforge3/envs/VTHacks13/lib/python3.13/site-packages/scipy/_lib/pyprima/common/preproc.py:68: UserWarning: COBYLA: Invalid MAXFUN; it should be at least num_vars + 2; it is set to 50
+  warn(f'{solver}: Invalid MAXFUN; it should be at least {min_maxfun_str}; it is set to {maxfun}')
+  Evaluation  1: Energy = -1358.94277645 Hartree (took 7.72s)
+    *** NEW BEST ENERGY: -1358.94277645 Hartree ***
+  Evaluation  2: Energy = -1359.14770271 Hartree (took 8.89s)
+    *** NEW BEST ENERGY: -1359.14770271 Hartree ***
+  Evaluation  3: Energy = -1359.37568825 Hartree (took 7.96s)
+    *** NEW BEST ENERGY: -1359.37568825 Hartree ***
+  Evaluation  4: Energy = -1359.36992899 Hartree (took 6.67s)
+  Evaluation  5: Energy = -1359.43814182 Hartree (took 7.01s)
+    *** NEW BEST ENERGY: -1359.43814182 Hartree ***
+  Evaluation  6: Energy = -1359.49673807 Hartree (took 7.30s)
+    *** NEW BEST ENERGY: -1359.49673807 Hartree ***
+  Evaluation  7: Energy = -1359.53181237 Hartree (took 8.23s)
+    *** NEW BEST ENERGY: -1359.53181237 Hartree ***
+  Evaluation  8: Energy = -1359.49025252 Hartree (took 6.56s)
+  Evaluation  9: Energy = -1359.49659314 Hartree (took 6.83s)
+  Evaluation 10: Energy = -1359.54039420 Hartree (took 7.92s)
+    *** NEW BEST ENERGY: -1359.54039420 Hartree ***
+  Evaluation 11: Energy = -1359.53281596 Hartree (took 9.05s)
+  Evaluation 12: Energy = -1359.54056843 Hartree (took 8.59s)
+    *** NEW BEST ENERGY: -1359.54056843 Hartree ***
+  Evaluation 13: Energy = -1359.53136450 Hartree (took 7.87s)
+  Evaluation 14: Energy = -1359.54728841 Hartree (took 7.67s)
+    *** NEW BEST ENERGY: -1359.54728841 Hartree ***
+  Evaluation 15: Energy = -1359.51382853 Hartree (took 8.00s)
+  Evaluation 16: Energy = -1359.53661556 Hartree (took 7.39s)
+  Evaluation 17: Energy = -1359.53681441 Hartree (took 7.13s)
+  Evaluation 18: Energy = -1359.57250781 Hartree (took 7.82s)
+    *** NEW BEST ENERGY: -1359.57250781 Hartree ***
+  Evaluation 19: Energy = -1359.56956838 Hartree (took 9.75s)
+  Evaluation 20: Energy = -1359.49352792 Hartree (took 7.34s)
+  Evaluation 21: Energy = -1359.60243298 Hartree (took 7.56s)
+    *** NEW BEST ENERGY: -1359.60243298 Hartree ***
+  Evaluation 22: Energy = -1359.66538448 Hartree (took 7.20s)
+    *** NEW BEST ENERGY: -1359.66538448 Hartree ***
+  Evaluation 23: Energy = -1359.65082500 Hartree (took 8.80s)
+  Evaluation 24: Energy = -1359.62149244 Hartree (took 7.77s)
+  Evaluation 25: Energy = -1359.63815805 Hartree (took 9.13s)
+  Evaluation 26: Energy = -1359.66611717 Hartree (took 8.84s)
+    *** NEW BEST ENERGY: -1359.66611717 Hartree ***
+  Evaluation 27: Energy = -1359.65427693 Hartree (took 7.70s)
+  Evaluation 28: Energy = -1359.61986762 Hartree (took 7.75s)
+  Evaluation 29: Energy = -1359.66475071 Hartree (took 9.94s)
+  Evaluation 30: Energy = -1359.64728428 Hartree (took 7.40s)
+  Evaluation 31: Energy = -1359.65478593 Hartree (took 8.89s)
+  Evaluation 32: Energy = -1359.63856661 Hartree (took 9.27s)
+  Evaluation 33: Energy = -1359.63279918 Hartree (took 8.98s)
+  Evaluation 34: Energy = -1359.74018657 Hartree (took 7.32s)
+    *** NEW BEST ENERGY: -1359.74018657 Hartree ***
+  Evaluation 35: Energy = -1359.57718805 Hartree (took 8.04s)
+  Evaluation 36: Energy = -1359.67724081 Hartree (took 7.91s)
+  Evaluation 37: Energy = -1359.73024283 Hartree (took 9.42s)
+  Evaluation 38: Energy = -1359.70996667 Hartree (took 8.12s)
+  Evaluation 39: Energy = -1359.71992513 Hartree (took 8.18s)
+  Evaluation 40: Energy = -1359.72923252 Hartree (took 7.46s)
+  Evaluation 41: Energy = -1359.71471710 Hartree (took 8.48s)
+  Evaluation 42: Energy = -1359.72019339 Hartree (took 8.10s)
+  Evaluation 43: Energy = -1359.71696006 Hartree (took 9.15s)
+  Evaluation 44: Energy = -1359.71837656 Hartree (took 8.70s)
+  Evaluation 45: Energy = -1359.75264778 Hartree (took 8.58s)
+    *** NEW BEST ENERGY: -1359.75264778 Hartree ***
+  Evaluation 46: Energy = -1359.73693027 Hartree (took 9.03s)
+  Evaluation 47: Energy = -1359.72429154 Hartree (took 8.46s)
+  Evaluation 48: Energy = -1359.70605468 Hartree (took 7.68s)
+  Evaluation 49: Energy = -1359.71438545 Hartree (took 9.10s)
+  Evaluation 50: Energy = -1359.88972892 Hartree (took 9.22s)
+    *** NEW BEST ENERGY: -1359.88972892 Hartree ***
+Return from COBYLA because the objective function has been evaluated MAXFUN times.
+Number of function values = 50   Least value of F = -1359.8897289238494   Constraint violation = 6.938893903907228e-18
+The corresponding X is:
+[ 1.53013758e+00  1.55738565e+00  1.76329737e-02  1.13769759e+00
+  1.29118218e+00  1.04017305e+00  2.77555756e-17  1.38777878e-17
+  9.71874601e-01  1.38777878e-17  1.07503900e+00  0.00000000e+00
+  1.04818684e+00  2.77555756e-17  0.00000000e+00  6.00253622e-03
+  1.00337726e+00  1.38777878e-17  0.00000000e+00  1.09878385e+00
+  1.04239688e+00  2.66061070e-02  5.55111512e-17  2.77555756e-17
+  9.14643951e-01  2.16840434e-18  0.00000000e+00  5.83921513e-02
+ -6.93889390e-18  1.38777878e-17  1.58736146e-01  8.32667268e-17
+  1.19875909e+00  1.38777878e-17  1.38777878e-16  2.50172879e-02
+  0.00000000e+00  6.34453314e-02  1.04083409e-17  6.93889390e-18
+  6.93889390e-18  5.00958878e-02  2.70954602e-02  9.88994710e-01
+  2.77555756e-17  1.12788264e-02  0.00000000e+00  1.38777878e-17]
+The constraint value is:
+[-1.53013758e+00 -4.75304773e+00 -1.55738565e+00 -4.72579965e+00
+ -1.76329737e-02 -6.26555233e+00 -1.13769759e+00 -5.14548772e+00
+ -1.29118218e+00 -4.99200312e+00 -1.04017305e+00 -5.24301226e+00
+ -2.77555756e-17 -6.28318531e+00 -1.38777878e-17 -6.28318531e+00
+ -9.71874601e-01 -5.31131071e+00 -1.38777878e-17 -6.28318531e+00
+ -1.07503900e+00 -5.20814630e+00  0.00000000e+00 -6.28318531e+00
+ -1.04818684e+00 -5.23499847e+00 -2.77555756e-17 -6.28318531e+00
+  0.00000000e+00 -6.28318531e+00 -6.00253622e-03 -6.27718277e+00
+ -1.00337726e+00 -5.27980805e+00 -1.38777878e-17 -6.28318531e+00
+  0.00000000e+00 -6.28318531e+00 -1.09878385e+00 -5.18440146e+00
+ -1.04239688e+00 -5.24078842e+00 -2.66061070e-02 -6.25657920e+00
+ -5.55111512e-17 -6.28318531e+00 -2.77555756e-17 -6.28318531e+00
+ -9.14643951e-01 -5.36854136e+00 -2.16840434e-18 -6.28318531e+00
+  0.00000000e+00 -6.28318531e+00 -5.83921513e-02 -6.22479316e+00
+  6.93889390e-18 -6.28318531e+00 -1.38777878e-17 -6.28318531e+00
+ -1.58736146e-01 -6.12444916e+00 -8.32667268e-17 -6.28318531e+00
+ -1.19875909e+00 -5.08442621e+00 -1.38777878e-17 -6.28318531e+00
+ -1.38777878e-16 -6.28318531e+00 -2.50172879e-02 -6.25816802e+00
+  0.00000000e+00 -6.28318531e+00 -6.34453314e-02 -6.21973998e+00
+ -1.04083409e-17 -6.28318531e+00 -6.93889390e-18 -6.28318531e+00
+ -6.93889390e-18 -6.28318531e+00 -5.00958878e-02 -6.23308942e+00
+ -2.70954602e-02 -6.25608985e+00 -9.88994710e-01 -5.29419060e+00
+ -2.77555756e-17 -6.28318531e+00 -1.12788264e-02 -6.27190648e+00
+  0.00000000e+00 -6.28318531e+00 -1.38777878e-17 -6.28318531e+00]
+
+
+============================================================
+OPTIMIZATION SUMMARY
+============================================================
+Final energy: -1359.88972892 Hartree
+COBYLA success: False
+COBYLA message: Return from COBYLA because the objective function has been evaluated MAXFUN times.
+Total function evaluations: 50
+Total optimization time: 408.12 seconds
+Average time per evaluation: 8.16 seconds
+Energy improvement: 0.94695247 Hartree
+============================================================
+Energy convergence saved to: generated_haemophilus_influenzae_006_3d_coordinates_energy.csv
+Energy convergence plot saved to: generated_haemophilus_influenzae_006_3d_coordinates_vqe_results.png
+
+======================================================================
+VQE SIMULATION COMPLETED
+======================================================================
+Molecular formula: C19FH17N6O3
+Ground state energy: -1359.88972892 Hartree
+Execution time: 417.23 seconds
+Function evaluations: 50
+Success: True
+======================================================================
+
+Output files created:
+  - generated_haemophilus_influenzae_006_3d_coordinates_energy.csv (energy convergence data)
+  - generated_haemophilus_influenzae_006_3d_coordinates_vqe_results.png (energy convergence plot)
+
+Simulation completed successfully!

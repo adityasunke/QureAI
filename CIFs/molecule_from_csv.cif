@@ -1,10 +1,9 @@
-data_molecular_structure_from_csv
+generated_streptococcus_pneumoniae_001
 
 _audit_creation_method    'Converted from CSV data'
 _audit_creation_date      2025-09-26
 
 _chemical_name_common     'Molecule from CSV'
-_chemical_formula_sum     '?'
 
 _cell_length_a    30.000
 _cell_length_b    30.000
