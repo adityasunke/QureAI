@@ -1,5 +1,4 @@
-# Qure AI  
-**Harnessing Machine Learning and Quantum Computing to fight Meningitis**
+# Qure AI: **Harnessing Machine Learning and Quantum Computing to fight Meningitis**
 ---
 [Link to Portfolio](https://qure-ai.vercel.app/)
 ---
