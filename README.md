@@ -6,7 +6,7 @@
 ## Project Overview
 **Qure AI** is a hybrid **AI + Quantum** pipeline designed to discover and validate potential drug molecules targeting the bacteria that cause **meningitis**.  
 
-- **AI/ML Component**: A machine learning model (Support Vector Machine) is trained on molecular datasets (sourced from **ChEMBL**) to identify effective drug candidates. We also use generative AI to propose **novel SMILES strings** as potential cures.  
+- **AI/ML Component**: A machine learning model (Support Vector Machine) is trained on molecular datasets (sourced from **ChEMBL**) to identify effective drug candidates. We also propose **novel SMILES strings** as potential cures.  
 - **Quantum Component**: The **Variational Quantum Eigensolver (VQE)** algorithm is applied to calculate molecular ground-state energies. Lower energies indicate greater molecular stability, providing a validation step for both existing and AI-generated molecules.  
 
 This project demonstrates the **synergy of machine learning and quantum simulation** for next-generation drug discovery.
@@ -21,7 +21,7 @@ Meningitis remains a **critical global health burden**:
 - **1 in 5 survivors** live with permanent disabilities (brain damage, limb amputations, kidney failure).  
 - Within **1–2 years**, the majority of antibodies decrease rapidly.  
 
-By integrating AI and quantum computing, **Qure AI** aims to accelerate drug discovery and validation, potentially reducing timelines and costs compared to traditional wet-lab methods.
+By integrating AI and quantum computing, **Qure AI** aims to accelerate drug discovery and validation, potentially reducing timelines and costs compared to traditional lab methods.
 
 ---
 
@@ -60,9 +60,11 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
 ## Quantum Validation (VQE)
 - **Framework**: Qiskit + PySCF  
 - **Process**:  
-  1. Convert molecules into Hamiltonians  
-  2. Run **Variational Quantum Eigensolver (VQE)**  
-  3. Compare ground-state energies  
+  1. Convert molecules into Hamiltonians
+  2. Choose an appropriate Ansatz (EfficientSU2)
+  3. Implement a classical optimizer (COBYLA)
+  4. Run **Variational Quantum Eigensolver (VQE)**  
+  5. Compare ground-state energies in Hartree (1 Hartree = 27.2 eV)
 - **Interpretation**:  
   - **Lower energy → more stable molecule**  
   - Validates both **existing** and **AI-generated** molecules  
@@ -74,19 +76,17 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
 flowchart TD
     A[📂 Clean Dataset] --> B[🤖 Train SVM Model on Molecular Features]
     B --> C[⚛️ Run VQE Simulation for Quantum Validation]
-    C --> D[🧬 Generate Novel Molecules via AI]
+    C --> D[🧬 Generate Novel Molecules via Machine Learning]
     D --> E[📊 Compare Novel vs Existing Molecules by Calculating Energy Levels]
 ```
 ---
 
 ## Tech Stack
-- **Languages**: Python, HTML, CSS
-- **Libraries**: Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib, three.js, chart.js, vanta.js
+Python, HTML, CSS, Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib, three.js, chart.js, vanta.js
 
 ---
 
 ## Results
-
 The VQE quantum simulation results demonstrate successful energy convergence for both existing and AI-generated molecules:
 <p align="center">
   <img src="Quantum/Outputs/cefotaxime_sodium_Sp_vqe_results.png" alt="Existing Molecule (Cefotaxime sodium)" width="420"/>
