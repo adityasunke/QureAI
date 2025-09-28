@@ -122,7 +122,7 @@ The VQE quantum simulation results demonstrate successful energy convergence for
 - [Haemophilus influenzae](https://www.ebi.ac.uk/chembl/explore/target/CHEMBL355)
 - [Streptococcus agalactiae](https://www.ebi.ac.uk/chembl/explore/target/CHEMBL614622)
 
-**Parameter Definitions:**
+**Parameter Research:**
 - [MIC (Minimum Inhibitory Concentration)](https://journals.asm.org/doi/abs/10.1128/aac.32.8.1131)
 - [IC50](https://www.ingentaconnect.com/content/ben/ctmc/2012/00000012/00000011/art00008)
 - [MBC (Minimum Bactericidal Concentration)](https://www.sciencedirect.com/science/article/pii/S0732889313005956)
