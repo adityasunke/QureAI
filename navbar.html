@@ -1,0 +1,79 @@
+<div class="navbar" id="navbar">
+  <div class="menu-left">
+    <img src="/media/menu.png" alt="Menu" class="menu-icon" id="menuIcon" />
+  </div>
+
+  <div class="menu-right">
+    <a href="#aboutSection">ABOUT US</a>
+    <a href="#objectivesSection">OBJECTIVES</a>
+    <a href="#implementationSection">IMPLEMENTATION</a>
+    <a href="#codedSection1">HOW WE CODED IT</a>
+    <a href="#resultsSection">RESULTS</a>
+  </div>
+</div>
+
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+
+  .navbar {
+    position: absolute; 
+    top: 24px;
+    left: 24px;
+    right: 24px;
+    z-index: 10;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: opacity 0.3s ease;
+  }
+
+  .menu-left {
+    flex-shrink: 0;
+  }
+
+  .menu-icon {
+    width: 48px;
+    height: 48px;
+    cursor: pointer;
+    filter: invert(100%) brightness(200%);
+    transition: transform 0.3s ease;
+  }
+
+  .menu-icon:hover {
+    transform: scale(1.1);
+  }
+
+  .menu-right {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .menu-right a {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1rem;
+    letter-spacing: 0.15em;
+    color: #ffffff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+
+  .menu-right a:hover {
+    color: #00ffff;
+  }
+</style>
+
+<script>
+  const navbar = document.getElementById("navbar");
+  const hero = document.querySelector(".hero-container");
+
+  window.addEventListener("scroll", () => {
+    const heroBottom = hero.offsetTop + hero.offsetHeight;
+    if (window.scrollY > heroBottom - 100) {
+      navbar.style.opacity = "0"; 
+      navbar.style.pointerEvents = "none"; 
+    } else {
+      navbar.style.opacity = "1"; 
+      navbar.style.pointerEvents = "auto";
+    }
+  });
+</script>

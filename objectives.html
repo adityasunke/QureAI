@@ -1,0 +1,292 @@
+<style>
+:root{
+  --bg:#070a0d;
+  --ink:#dfe9f9;
+  --muted:#9fb2d6;
+  --blue:#66aaff;
+  --glow:0 0 14px rgba(102,170,255,.35), 0 0 28px rgba(102,170,255,.18);
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family: "Michroma", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  color:var(--ink);
+  background:
+    radial-gradient(1200px 800px at 85% -10%, #0e1624 0%, transparent 60%),
+    radial-gradient(900px 700px at -10% 110%, #0d1522 0%, transparent 60%),
+    var(--bg);
+  overflow-y: scroll;
+  scroll-behavior:smooth;
+}
+
+main{ scroll-snap-type:y mandatory; }
+section{
+  position:relative; min-height:100vh; padding:12vh 8vw 10vh;
+  scroll-snap-align:start; display:flex; align-items:center;
+}
+
+.fireflies{position:fixed; inset:0; pointer-events:none; z-index:1}
+.firefly{
+  position:absolute; width:8px; height:8px; border-radius:50%;
+  background: radial-gradient(circle at 50% 50%, #e9f5ff, #7fb2ff 65%, rgba(127,178,255,0) 70%);
+  box-shadow:0 0 10px rgba(127,178,255,.7), 0 0 22px rgba(127,178,255,.35);
+  opacity:.85; filter:saturate(1.2);
+  animation:float var(--t,18s) ease-in-out infinite alternate;
+}
+@keyframes float{
+  0%   { transform: translate(0,0) scale(.95); opacity:.85 }
+  50%  { transform: translate(var(--dx,120px), var(--dy,-90px)) scale(1.05); opacity:.95 }
+  100% { transform: translate(calc(var(--dx,120px) * -0.6), calc(var(--dy,-90px) * -0.6)) scale(1); opacity:.9 }
+}
+
+.index{ position:fixed; left:18px; top:0; bottom:0; width:40px; z-index:2; pointer-events:none; }
+.index .rail{
+  position:absolute; left:19px; top:6vh; bottom:6vh; width:2px;
+  background: linear-gradient(180deg, rgba(102,170,255,.08), rgba(102,170,255,.22), rgba(102,170,255,.08));
+  box-shadow: inset 0 0 8px rgba(102,170,255,.25);
+}
+.index .dot{
+  --size:26px; left:8px; position:absolute; width:var(--size); height:var(--size); border-radius:50%;
+  background: rgba(102,170,255,.14);
+  box-shadow: inset 0 0 12px rgba(102,170,255,.25);
+  transform: scale(1); transition: transform .25s, background .25s, box-shadow .25s;
+  pointer-events:auto; cursor:pointer;
+}
+.index .dot::after{
+  content:""; position:absolute; inset:-6px; border-radius:50%;
+  background: radial-gradient(circle at 50% 50%, rgba(160,200,255,.8), rgba(102,170,255,.45) 45%, rgba(102,170,255,0) 70%);
+  opacity:0; filter: blur(2px); transition: opacity .25s;
+}
+.index .dot.active{
+  background:#8dc0ff22; box-shadow: inset 0 0 16px rgba(102,170,255,.45), 0 0 18px rgba(102,170,255,.35);
+  transform: scale(1.22);
+}
+.index .dot.active::after{ opacity:1 }
+.index .dot:nth-child(2){ top:calc(6vh + 0*( (100vh - 12vh) / 3 )); }
+.index .dot:nth-child(3){ top:calc(6vh + 1*( (100vh - 12vh) / 3 )); }
+.index .dot:nth-child(4){ top:calc(6vh + 2*( (100vh - 12vh) / 3 )); }
+
+.eyebrow{
+  color:var(--muted); letter-spacing:.03em; text-align:center; margin-bottom:2vh;
+  font-size:clamp(16px,1.6vw,22px);
+}
+
+#impact{ justify-content:center; flex-direction:column; gap:2.5vh; z-index:0; }
+.big-number{
+  font-family:"Orbitron"; font-weight:900; line-height:1; letter-spacing:.02em;
+  font-size:clamp(64px,15vw,220px); text-align:center; color:var(--ink);
+  text-shadow:0 0 35px rgba(180,210,255,.25), 0 0 60px rgba(102,170,255,.25);
+}
+.subnote{ color:var(--muted); text-align:center; font-size:clamp(12px,1.05vw,16px) }
+.count-underline{
+  height:2px; width:0; margin:8px auto 0; border-radius:2px;
+  background:linear-gradient(90deg, rgba(102,170,255,0), var(--blue), rgba(102,170,255,0));
+  box-shadow:var(--glow);
+}
+.run{ animation:underline 1.2s ease forwards; }
+@keyframes underline{ from{width:0;opacity:.2} to{width:min(72vw,920px);opacity:1} }
+
+#coverage{ align-items:center; gap:6vw; }
+.coverage-wrap{ display:grid; grid-template-columns:1fr 420px; gap:6vw; width:100%; }
+.coverage-copy{ align-self:center; justify-self:center; max-width:900px; text-align:center; }
+.coverage-title{ font-size:clamp(24px,3.2vw,48px); line-height:1.25; color:var(--ink); }
+.coverage-p{ margin-top:18px; color:var(--muted); font-size:clamp(13px,1.2vw,18px) }
+.donut{ width:420px; height:420px; justify-self:center; align-self:center; filter: drop-shadow(0 12px 24px rgba(102,170,255,.18)); }
+.donut text{ font-family:"Orbitron"; fill:var(--ink); font-size:48px; dominant-baseline:middle; text-anchor:middle; }
+
+#solution{ justify-content:center; text-align:center; }
+.kicker{ color:var(--muted); font-size:clamp(16px,2.2vw,32px); margin-bottom:8px }
+.solution{
+  font-family:"Michroma"; letter-spacing:.02em; font-size:clamp(28px,4.6vw,64px);
+  display:inline-block; position:relative; padding-bottom:14px; 
+  font-weight:700;
+}
+.solution.underline::after{
+  content:""; position:absolute; left:0; right:0; bottom:0; height:3px; width:0; margin-inline:auto;
+  background: linear-gradient(90deg, rgba(102,170,255,.0), var(--blue), rgba(102,170,255,.0));
+  box-shadow: var(--glow); animation: underline 1.2s ease forwards;
+}
+
+.center{ text-align:center }
+footer{ height:12vh }
+
+@media (max-width:980px){
+  .coverage-wrap{grid-template-columns:1fr; gap:6vh}
+  .donut{width:320px;height:320px}
+}
+</style>
+</head>
+<body>
+
+<div class="fireflies" aria-hidden="true">
+  <div class="firefly" style="top:18%;left:14%; --dx:140px; --dy:-120px; --t:22s;"></div>
+  <div class="firefly" style="top:76%;left:8%;  --dx:120px; --dy:-80px;  --t:19s;"></div>
+  <div class="firefly" style="top:12%;left:78%; --dx:-160px;--dy:80px;   --t:23s;"></div>
+  <div class="firefly" style="top:58%;left:62%; --dx:90px;  --dy:-120px; --t:20s;"></div>
+  <div class="firefly" style="top:30%;left:46%; --dx:-110px;--dy:60px;  --t:21s;"></div>
+  <div class="firefly" style="top:86%;left:82%; --dx:-140px;--dy:-90px; --t:24s;"></div>
+</div>
+
+<nav class="index" aria-label="section index">
+  <div class="rail"></div>
+  <div class="dot" data-target="#impact"  title="Deaths / year"></div>
+  <div class="dot" data-target="#coverage" title="Coverage gap"></div>
+  <div class="dot" data-target="#solution" title="Solution"></div>
+</nav>
+
+<main>
+  <section id="impact">
+    <div class="eyebrow">A preventable crisis, still claiming lives.</div>
+    <div class="big-number" id="bigNum" data-target="236000">236,000</div>
+    <div class="count-underline" id="countLine"></div>
+    <p class="subnote">deaths / year — ≈ 647 per day by meningitis</p>
+  </section>
+
+  <section id="coverage">
+    <div class="coverage-wrap">
+      <div class="coverage-copy">
+        <h2 class="coverage-title">Current tools avoid only part of the problem</h2>
+        <p class="coverage-p">
+          Vaccines &amp; drugs help — but not fully. 
+        </p>
+      </div>
+
+      <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="70 percent">
+        <defs>
+          <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#9fcbff"/>
+            <stop offset="100%" stop-color="#60a5ff"/>
+          </linearGradient>
+        </defs>
+        <circle cx="100" cy="100" r="78" fill="none" stroke="#0d1a2b" stroke-width="10" opacity=".6"/>
+        <g stroke="#2a3d5c" stroke-width="2" opacity=".55">
+          <line x1="100" y1="18"  x2="100" y2="26"/>
+          <line x1="170" y1="56"  x2="164" y2="60"/>
+          <line x1="182" y1="124" x2="174" y2="124"/>
+          <line x1="140" y1="174" x2="136" y2="168"/>
+          <line x1="60"  y1="174" x2="64"  y2="168"/>
+          <line x1="18"  y1="124" x2="26"  y2="124"/>
+          <line x1="30"  y1="56"  x2="36"  y2="60"/>
+        </g>
+        <circle id="arc" cx="100" cy="100" r="78" fill="none"
+                stroke="url(#g)" stroke-width="10" stroke-linecap="round"
+                stroke-dasharray="490" stroke-dashoffset="490"
+                style="filter: drop-shadow(0 0 10px rgba(102,170,255,.45));"/>
+        <text x="100" y="104">70%</text>
+      </svg>
+    </div>
+  </section>
+
+  <section id="solution">
+    <div class="center" style="width:min(1100px,100vw);">
+      <div class="kicker">The solution is</div>
+      <div class="solution" id="solText">AI-driven drug discovery</div>
+      
+      <p class="subnote" style="margin-top:16px">
+        Broad-strain screening → QSAR / generative design → docking &amp; ADMET → candidates prioritized for real-world constraints.
+      </p>
+    </div>
+  </section>
+
+  <footer></footer>
+</main>
+
+<script>
+document.querySelectorAll('.index .dot').forEach(d=>{
+  d.addEventListener('click', ()=>{
+    const t = document.querySelector(d.dataset.target);
+    if(t){ t.scrollIntoView({behavior:'smooth'}); }
+  });
+});
+
+const sections=[...document.querySelectorAll('main > section')];
+function goto(delta){
+  const y=window.scrollY+1;
+  const idx=sections.findIndex(s=>y < s.offsetTop+s.offsetHeight-10);
+  const next=Math.min(Math.max(idx+delta,0),sections.length-1);
+  sections[next].scrollIntoView({behavior:'smooth'});
+}
+window.addEventListener('keydown',e=>{
+  if(e.key==='ArrowDown'){e.preventDefault();goto(+1);}
+  if(e.key==='ArrowUp'){e.preventDefault();goto(-1);}
+});
+
+const dots=document.querySelectorAll('.index .dot');
+const countLine=document.getElementById('countLine');
+const solText=document.getElementById('solText');
+const arc=document.getElementById('arc');
+const bigNum=document.getElementById('bigNum');
+
+const ARC_FULL=490;              
+const ARC_TARGET=147;            
+let counted=false;               
+
+function animateDonut(){
+  if(!arc) return;
+  arc.style.transition='none';
+  arc.style.strokeDashoffset=String(ARC_FULL);
+  void arc.getBoundingClientRect();
+  arc.style.transition='stroke-dashoffset 1.25s ease';
+  arc.style.strokeDashoffset=String(ARC_TARGET);
+}
+
+function formatInt(n){ return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","); }
+function countUpOnce(el, target, ms=1200){
+  if(counted) return;
+  counted=true;
+  const start=performance.now();
+  const from=0;
+  function step(t){
+    const p=Math.min(1,(t-start)/ms);
+    const val=Math.round(from + (target-from)*p);
+    el.textContent = formatInt(val);
+    if(p<1) requestAnimationFrame(step);
+    else el.textContent = formatInt(target);
+  }
+  el.textContent = "0";
+  requestAnimationFrame(step);
+}
+
+const io=new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    const id=entry.target.id;
+
+    if(entry.isIntersecting){
+      dots.forEach(d=>d.classList.toggle('active', d.dataset.target==='#'+id));
+    }
+
+    if(id==='impact'){
+      if(entry.isIntersecting){
+        countLine.classList.remove('run'); void countLine.offsetWidth; countLine.classList.add('run');
+        countUpOnce(bigNum, parseInt(bigNum.dataset.target,10), 1400); // 236,000 loads once
+      }else{
+        countLine.classList.remove('run');
+      }
+    }
+
+    if(id==='coverage'){
+      if(entry.isIntersecting){ animateDonut(); }
+      else{
+        arc.style.transition='none';
+        arc.style.strokeDashoffset=String(ARC_FULL);
+      }
+    }
+
+    if(id==='solution'){
+      if(entry.isIntersecting){
+        solText.classList.remove('underline'); void solText.offsetWidth; solText.classList.add('underline');
+      }else{
+        solText.classList.remove('underline');
+      }
+    }
+  });
+},{threshold:.45});
+
+sections.forEach(s=>io.observe(s));
+window.addEventListener('load',()=>{
+  dots.forEach(d=>d.classList.toggle('active', d.dataset.target==='#'+sections[0].id));
+  countLine.classList.add('run');
+});
+</script>

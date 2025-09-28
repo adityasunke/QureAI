@@ -1,0 +1,2144 @@
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Michroma&family=Orbitron:wght@400..900&display=swap');
+</style>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+async function loadCSV(path) {
+  const response = await fetch(path);
+  const text = await response.text();
+  const rows = text.trim().split("\n").slice(1);
+  const labels = [];
+  const values = [];
+
+  rows.forEach(row => {
+    const [funcEval, energy] = row.split(",");
+    labels.push(parseInt(funcEval));
+    values.push(parseFloat(energy));
+  });
+
+  return { labels, values };
+}
+
+async function renderCharts() {
+  const cefotaxime = await loadCSV("data/cefotaxime_sodium_Sp_energy.csv");
+  const generated = await loadCSV("data/generated_streptococcus_pneumoniae_001_3d_coordinates_energy.csv");
+
+  new Chart(document.getElementById("cefotaximeChart"), {
+    type: "line",
+    data: {
+      labels: cefotaxime.labels,
+      datasets: [{
+        label: "Energy (Hartree)",
+        data: cefotaxime.values,
+        borderColor: "#00ffff",
+        backgroundColor: "rgba(0,255,255,0.2)",
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: "#ffffff" } } },
+      scales: {
+        x: { ticks: { color: "#ffffff" } },
+        y: { ticks: { color: "#ffffff" } }
+      }
+    }
+  });
+  new Chart(document.getElementById("generatedChart"), {
+    type: "line",
+    data: {
+      labels: generated.labels,
+      datasets: [{
+        label: "Energy (Hartree)",
+        data: generated.values,
+        borderColor: "#ff00ff",
+        backgroundColor: "rgba(255,0,255,0.2)",
+        tension: 0.2
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: "#ffffff" } } },
+      scales: {
+        x: { ticks: { color: "#ffffff" } },
+        y: { ticks: { color: "#ffffff" } }
+      }
+    }
+  });
+}
+
+renderCharts();
+</script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Qure AI</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+    body {
+      background-color: #0a0a0a;
+      color: #ffffff;
+      font-family: 'Michroma', sans-serif;
+    }
+
+    .background-container {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      z-index: 0;
+    }
+    .background-overlay {
+      position: absolute;
+      inset: 0;
+      background: black;
+      opacity: 0;
+      transition: opacity 0.1s ease-out;
+      pointer-events: none;
+    }
+
+    .content-container { position: relative; z-index: 1; }
+
+    .hero-container {
+      position: relative;
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+    }
+
+    .title-container {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+      z-index: 2;
+      opacity: 1;
+    }
+
+    .main-title {
+      font-size: clamp(3rem, 8vw, 8rem);
+      font-weight: 900;
+      color: rgba(255, 255, 255, 0.3);
+      -webkit-text-stroke: 1px rgba(255, 255, 255, 0.8);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .subtitle {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(1rem, 2.5vw, 1.5rem);
+      font-weight: 900;
+      color: #cccccc;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .learn-more {
+      position: absolute;
+      bottom: 50px; left: 50%;
+      transform: translateX(-50%);
+      padding: 1rem 2rem;
+      font-size: 1.25rem;
+      color: #ffffff;
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid #ffffff;
+      cursor: pointer;
+      opacity: 0.7;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      animation: bounce 2s infinite;
+      z-index: 2;
+    }
+    .learn-more:hover { background: rgba(0, 0, 0, 0.6); transform: translate(-50%, 2px); }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, 0); }
+      50% { transform: translate(-50%, 8px); }
+    }
+
+    .about-section {
+  min-height: 100vh;  
+  height: auto;       
+  padding: 80px 40px 140px 40px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;  
+}
+
+
+    .about-content { width: 100%; max-width: 1400px; height: 100%; display: flex; flex-direction: column; }
+
+
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      perspective: 1000px;
+      margin-bottom: 120px;
+      margin-top: 100px;
+    }
+
+    .team-carousel {
+      position: relative;
+      width: 800px;
+      height: 450px;
+      transform-style: preserve-3d;
+      transition: transform 1.2s cubic-bezier(0.4, 0.0, 0.2, 1);
+    }
+
+    .team-card {
+      position: absolute;
+      width: 350px;
+      height: 450px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
+      cursor: pointer;
+      left: 50%;
+      top: 50%;
+      transform-origin: center;
+    }
+
+    .team-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(0, 255, 255, 0.4);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+    }
+
+    .team-card:nth-child(1) {
+      transform: translate(-50%, -50%) rotateY(0deg) translateZ(300px);
+      z-index: 4;
+    }
+
+    .team-card:nth-child(2) {
+      transform: translate(-50%, -50%) rotateY(90deg) translateZ(300px);
+      z-index: 3;
+    }
+
+    .team-card:nth-child(3) {
+      transform: translate(-50%, -50%) rotateY(180deg) translateZ(300px);
+      z-index: 2;
+    }
+
+    .team-card:nth-child(4) {
+      transform: translate(-50%, -50%) rotateY(270deg) translateZ(300px);
+      z-index: 1;
+    }
+
+    .team-avatar {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      margin: 0 auto 1.5rem auto;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    .team-card:hover .team-avatar {
+      transform: scale(1.1);
+    }
+
+    .team-name {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #ffffff;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+      margin-bottom: 10px;
+    }
+
+    .team-role {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1rem;
+      color: #ffffff;
+      font-weight: 400;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      margin-bottom: 15px;
+    }
+
+    .team-bio {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.8rem;
+      color: #cccccc;
+      line-height: 1.5;
+      text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+    }
+
+    .carousel-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 60px;  
+  height: 60px; 
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 5;
+  backdrop-filter: blur(10px);
+}
+
+.carousel-arrow img {
+  width: 24px;
+  height: 24px;
+  filter: invert(100%) brightness(200%);
+  transition: filter 0.3s ease;
+}
+
+.carousel-arrow:hover img {
+  filter: invert(100%) brightness(200%) drop-shadow(0 0 8px #00ffff);
+}
+
+    .carousel-arrow:hover {
+      background: rgba(0, 255, 255, 0.2);
+      border-color: rgba(0, 255, 255, 0.5);
+      color: #00ffff;
+      transform: translateY(-50%) scale(1.1);
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.3);
+    }
+
+    .carousel-arrow.prev {
+      left: -150px;
+    }
+
+    .carousel-arrow.next {
+      right: -150px;
+    }
+
+    .carousel-nav {
+      display: flex;
+      justify-content: center;
+      margin-top: 40px;
+      gap: 15px;
+    }
+
+    .nav-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.4);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 2px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .nav-dot.active {
+      background: #00ffff;
+      border-color: #00ffff;
+      transform: scale(1.2);
+      box-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+    }
+
+    .nav-dot:hover {
+      background: rgba(0, 255, 255, 0.6);
+      border-color: rgba(0, 255, 255, 0.8);
+      transform: scale(1.1);
+    }
+
+.objective-text {
+  flex: 1.2;
+  padding: 1rem 2rem;
+  text-align: center;
+}
+
+.objective-text h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 1rem;
+  color: #00ffff;
+  text-align: center;
+}
+
+.objective-text p {
+  font-family: 'Michroma', sans-serif;
+  font-size: 1.4rem;
+  line-height: 1.8;
+  color: #cccccc;
+  text-align: center;
+}
+
+.objectives-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 3rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+  text-align: center; 
+}
+
+.objective-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  margin-bottom: -20px;
+  width: 100%;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 900px) {
+  .objective-row {
+    flex-direction: column;
+    gap: 20px;
+  }
+}
+
+
+
+.objective-row.reverse {
+  flex-direction: row-reverse;
+}
+.objective-model {
+  flex: 1;
+  height: 400px;
+  background: transparent;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.objective-model canvas {
+  width: 80% !important;
+  height: 80% !important;
+  margin: auto;
+  display: block;
+  pointer-events: auto;
+  animation: float 6s ease-in-out infinite;
+}
+
+.objective-text {
+  flex: 1;
+  padding: 1rem 2rem;
+  text-align: left;
+}
+
+.objective-text p {
+  margin-top:18px; color:var(--obj-muted); font-size:clamp(25px,1.2vw,18px)
+}
+
+
+.floating-model canvas {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-15px); }
+}
+
+
+
+    .implementation-section {
+      min-height: 50vh;
+      padding: 100px 20px 50px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .implementation-title {
+      font-family:'Michroma', sans-serif; letter-spacing:.02em; font-size:clamp(28px,4.6vw,64px);
+      display:inline-block; position:relative; padding-bottom:14px; font-weight:700;
+    }
+
+    .implementation-text {
+      font-family: 'Michroma', sans-serif;
+      max-width: 900px;
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #cccccc;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .steps-container {
+      min-height: 300vh;
+      padding: 100px 0;
+      position: relative;
+    }
+
+    .step {
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 0 40px;
+    }
+
+    .step-circle {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #000000;
+      position: absolute;
+      top: 10%;
+      transform: translateX(-200px);
+      opacity: 0;
+      transition: all 0.3s ease-out;  
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(10px);
+      z-index: 3;
+    }
+
+    .step:nth-child(even) .step-circle {
+      transform: translateX(calc(100vw + 200px));
+    }
+
+    .step-circle.animate {
+      transform: translateX(0);
+      opacity: 1;
+    }
+
+    .step:nth-child(even) .step-circle.animate {
+      transform: translateX(0);
+    }
+
+    .step-content {
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 20px;
+      padding: 3rem;
+      max-width: 600px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      position: absolute;
+      top: 50%;
+      transform: scale(0) translateY(-50%);
+      opacity: 0;
+      transition: all 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition-delay: 0.1s;
+      z-index: 2;
+    }
+
+    .step:nth-child(odd) .step-content {
+      left: 200px;
+      transform-origin: left center;
+    }
+
+    .step:nth-child(even) .step-content {
+      right: 200px;
+      transform-origin: right center;
+    }
+
+    .step-content.animate {
+      transform: scale(1) translateY(-50%);
+      opacity: 1;
+    }
+
+    .step-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 1.5rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .step-description {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.1rem;
+      color: #cccccc;
+      line-height: 1.8;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+    }
+
+    .connecting-line {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(255, 255, 255, 0.3) 20%, 
+        rgba(255, 255, 255, 0.3) 80%, 
+        transparent 100%);
+      transform: translateX(-50%);
+      z-index: 1;
+    }
+
+    .coded-section {
+      padding: 80px 40px;
+      display: flex;
+      flex-direction: row;
+      gap: 40px;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .code-box {
+      flex: 1;
+      background: rgba(0, 0, 0, 0.7);
+      border: 1px solid rgba(0, 255, 255, 0.4);
+      border-radius: 10px;
+      padding: 20px;
+      font-family: monospace;
+      font-size: 1rem;
+      color: #00ffff;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 85vh;
+      white-space: pre;
+    }
+
+    .explanation-box {
+      flex: 1;
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.2rem;
+      color: #cccccc;
+      line-height: 1.6;
+    }
+
+    .results-section {
+      min-height: 100vh;
+      padding: 100px 40px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    .results-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      max-width: 1400px;
+      margin: 0 auto;
+    }
+
+    .result-card {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 2rem;
+      text-align: center;
+      backdrop-filter: blur(8px);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-8px);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(0, 255, 255, 0.4);
+    }
+
+    .result-number {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #00ffff;
+      margin-bottom: 1rem;
+    }
+
+    .result-description { font-size: 1.1rem; color: #cccccc; line-height: 1.5; }
+
+    .footer {
+      background: rgba(0, 0, 0, 0.8);
+      border-top: 1px solid rgba(0, 255, 255, 0.3);
+      padding: 60px 40px 30px 40px;
+      position: relative;
+      z-index: 2;
+      backdrop-filter: blur(10px);
+    }
+
+    .footer-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+
+    .footer-left {
+      text-align: left;
+    }
+
+    .footer-logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #ffffff;
+      margin-bottom: 1rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .footer-tagline {
+      font-family: 'Michroma', sans-serif;
+      font-size: 1rem;
+      color: #cccccc;
+      margin-bottom: 1.5rem;
+      line-height: 1.6;
+    }
+
+    .footer-description {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.9rem;
+      color: #999999;
+      line-height: 1.6;
+      max-width: 400px;
+    }
+
+    .footer-right {
+      text-align: right;
+    }
+
+    .footer-links-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-bottom: 2rem;
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+    }
+
+    .footer-links {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      align-items: flex-end;
+    }
+
+    .footer-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #cccccc;
+      font-family: 'Michroma', sans-serif;
+      font-size: 1.1rem;
+      font-weight: 400;
+      transition: all 0.3s ease;
+      padding: 8px 16px;
+      border-radius: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .footer-link:hover {
+      color: #00ffff;
+      background: rgba(0, 255, 255, 0.1);
+      border-color: rgba(0, 255, 255, 0.3);
+      transform: translateX(-8px);
+      box-shadow: 0 4px 20px rgba(0, 255, 255, 0.2);
+    }
+
+    .footer-link-icon {
+      width: 24px;
+      height: 24px;
+      filter: brightness(0.8);
+      transition: filter 0.3s ease;
+    }
+
+    .footer-link:hover .footer-link-icon {
+      filter: brightness(1.2) drop-shadow(0 0 8px #00ffff);
+    }
+
+    .footer-bottom {
+      margin-top: 40px;
+      padding-top: 30px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .footer-copyright {
+      font-family: 'Michroma', sans-serif;
+      font-size: 0.9rem;
+      color: #666666;
+    }
+
+    @media (max-width: 1200px) {
+      .step:nth-child(odd) .step-content {
+        left: 160px;
+      }
+      .step:nth-child(even) .step-content {
+        right: 160px;
+      }
+    }
+
+    @media (max-width: 900px) { 
+      .results-grid { grid-template-columns: 1fr; }
+      
+      .carousel-arrow {
+        display: none;
+      }
+      
+      .step {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .step-circle {
+        position: relative;
+        top: auto;
+        transform: translateY(-100px) !important;
+        margin-bottom: 2rem;
+      }
+
+      .step:nth-child(even) .step-circle {
+        transform: translateY(-100px) !important;
+      }
+
+      .step-circle.animate {
+        transform: translateY(0) !important;
+      }
+
+      .step-content {
+        position: relative;
+        top: auto;
+        left: auto !important;
+        right: auto !important;
+        transform: translateY(50px);
+        max-width: 90%;
+        margin: 0 auto;
+      }
+
+      .step-content.animate {
+        transform: translateY(0);
+      }
+
+      .connecting-line {
+        display: none;
+      }
+      
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 40px;
+        text-align: center;
+      }
+      .footer-left {
+        text-align: center;
+      }
+      .footer-right {
+        text-align: center;
+      }
+      .footer-links {
+        align-items: center;
+      }
+      .footer-link:hover {
+        transform: translateY(-4px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .team-carousel {
+        width: 400px;
+        height: 400px;
+      }
+
+      .team-card {
+        width: 280px;
+        height: 400px;
+        padding: 1.5rem;
+      }
+
+      .team-card:nth-child(1) {
+        transform: translate(-50%, -50%) rotateY(0deg) translateZ(200px) !important;
+      }
+
+      .team-card:nth-child(2) {
+        transform: translate(-50%, -50%) rotateY(90deg) translateZ(200px) !important;
+      }
+
+      .team-card:nth-child(3) {
+        transform: translate(-50%, -50%) rotateY(180deg) translateZ(200px) !important;
+      }
+
+      .team-card:nth-child(4) {
+        transform: translate(-50%, -50%) rotateY(270deg) translateZ(200px) !important;
+      }
+
+      .team-avatar { 
+        width: 100px; 
+        height: 100px; 
+      }
+
+      .team-name {
+        font-size: 1.2rem;
+      }
+
+      .team-role {
+        font-size: 0.9rem;
+      }
+
+      .team-bio {
+        font-size: 0.8rem;
+      }
+
+      .coded-section { flex-direction: column; }
+      .footer {
+        padding: 40px 20px 20px 20px;
+      }
+      .footer-logo {
+        font-size: 2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .step-circle {
+        width: 80px;
+        height: 80px;
+        font-size: 1.8rem;
+      }
+
+      .step-content {
+        padding: 2rem;
+      }
+
+      .step-title {
+        font-size: 1.5rem;
+      }
+
+      .step-description {
+        font-size: 1rem;
+      }
+    }
+
+    .navbar { position: fixed; top: 20px; left: 20px; z-index: 10; }
+    .menu-icon { width: 48px; height: 48px; cursor: pointer; filter: invert(100%) brightness(200%); transition: transform 0.3s ease; }
+    .menu-icon:hover { transform: scale(1.1); }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px; right: 30px;
+      width: 50px; height: 50px;
+      background: transparent;
+      display: flex;
+      align-items: center; justify-content: center;
+      cursor: pointer;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      z-index: 20;
+    }
+    #scrollTopBtn img {
+      width: 24px; height: 24px;
+      filter: invert(100%) brightness(200%) drop-shadow(0 0 4px #00ffff);
+      pointer-events: none;
+    }
+    #scrollTopBtn:hover { background: transparent; transform: scale(1.1); }
+  </style>
+</head>
+<body>
+  <div class="background-container" id="backgroundContainer">
+    <div class="background-overlay" id="backgroundOverlay"></div>
+  </div>
+
+  <div id="navbar-placeholder"></div>
+  <script>
+  fetch("navbar.html").then(r => r.text()).then(t => {
+    document.getElementById("navbar-placeholder").innerHTML = t;
+    document.querySelectorAll('#navbar-placeholder a[href^="#"]').forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute("href");
+        const target = document.querySelector(targetId);
+        if (target) {
+          target.scrollIntoView({ behavior: "smooth" });
+        }
+      });
+    });
+  });
+</script>
+
+
+  <div class="content-container">
+    <div class="hero-container">
+      <div class="title-container" id="titleContainer">
+        <h1 class="main-title">QURE AI</h1>
+        <p class="subtitle">Harnessing ML & Quantum to Fight Meningitis</p>
+      </div>
+      <div class="learn-more" id="learnMore">Learn More ↓</div>
+    </div>
+
+    <div class="about-section" id="aboutSection">
+      <div class="about-content">
+        <div class="carousel-container">
+          <div class="carousel-arrow prev" id="prevBtn">
+  <img src="/media/left.png" alt="Previous">
+</div>
+          <div class="team-carousel" id="teamCarousel">
+            <div class="team-card" data-index="0">
+              <img src="/media/ishaan.jpg" alt="Ishaan Jain" class="team-avatar">
+              <div class="team-name-container">
+                <h3 class="team-name">Ishaan Jain</h3>
+                <a href="https://www.linkedin.com/in/ishaan-jain-07a782299/" target="_blank" class="linkedin-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#0077b5">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+              <p class="team-role">CS and Cyber-Security</p>
+              <p class="team-bio">Passionate about cybersecurity and ethical hacking, Ishaan brings innovative solutions to protect digital infrastructures and ensure data security in our interconnected world.</p>
+            </div>
+            <div class="team-card" data-index="1">
+              <img src="/media/ishita.jpg" alt="Ishita Jain" class="team-avatar">
+              <div class="team-name-container">
+                <h3 class="team-name">Ishita Jain</h3>
+                <a href="https://www.linkedin.com/in/ishita-jain-380820291/" target="_blank" class="linkedin-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#0077b5">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+              <p class="team-role">CS and Biomed Engineering</p>
+              <p class="team-bio">Bridging the gap between technology and healthcare, Ishita focuses on developing cutting-edge medical technologies and bioengineering solutions to improve patient care.</p>
+            </div>
+            <div class="team-card" data-index="2">
+              <img src="https://media.licdn.com/dms/image/v2/D5603AQEciFzeVJNPNA/profile-displayphoto-shrink_400_400/B56ZTPrr9NHQAg-/0/1738651124201?e=1761782400&v=beta&t=l98l0-AIjXPfUVBmhctyDYZZnihkUQu5T1YbUu7tbTw" alt="Aditya Sunke" class="team-avatar">
+              <div class="team-name-container">
+                <h3 class="team-name">Aditya Sunke</h3>
+                <a href="https://www.linkedin.com/in/aditya-sunke/" target="_blank" class="linkedin-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#0077b5">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+              <p class="team-role">CS and Quantum Info Science</p>
+              <p class="team-bio">Exploring the frontiers of quantum computing and information science, Aditya works on revolutionary quantum algorithms and their practical applications.</p>
+            </div>
+            <div class="team-card" data-index="3">
+              <img src="https://media.licdn.com/dms/image/v2/D5603AQGd-9pb_ykjzA/profile-displayphoto-shrink_400_400/B56ZdjoZH5GQAk-/0/1749723223089?e=1761782400&v=beta&t=L8eHYUL5KjIsSmHRkJohFIFVS2e-T2Q9AZHy_mNlyvg" alt="Sankalp Dasari" class="team-avatar">
+              <div class="team-name-container">
+                <h3 class="team-name">Sankalp Dasari</h3>
+                <a href="https://www.linkedin.com/in/sankalp-dasari/" target="_blank" class="linkedin-icon">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="#0077b5">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                </a>
+              </div>
+              <p class="team-role">CS and Cyber-Security</p>
+              <p class="team-bio">Specializing in network security and threat analysis, Sankalp develops robust security frameworks and incident response strategies for enterprise environments.</p>
+            </div>
+          </div>
+          <div class="carousel-arrow next" id="nextBtn">
+  <img src="/media/right.png" alt="Next">
+</div>
+        </div>
+        <div class="carousel-nav" id="carouselNav">
+          <div class="nav-dot active" data-index="0"></div>
+          <div class="nav-dot" data-index="1"></div>
+          <div class="nav-dot" data-index="2"></div>
+          <div class="nav-dot" data-index="3"></div>
+        </div>
+      </div>
+    </div>
+
+<div class="objectives-section" id="objectivesSection">
+  <style>
+    #objectivesSection{
+      --obj-bg:#070a0d;
+      --obj-ink:#dfe9f9;
+      --obj-muted:#9fb2d6;
+      --obj-blue:#66aaff;
+      --obj-glow:0 0 14px rgba(102,170,255,.35), 0 0 28px rgba(102,170,255,.18);
+      position: relative;
+      color: var(--obj-ink);
+      background:transparent;
+      overflow: hidden; 
+      padding: 0;
+       margin-top: -150px;
+    }
+
+    #objectivesSection main{ scroll-snap-type: y mandatory; }
+    #objectivesSection section{
+      position:relative; min-height:auto; padding:6vh; 
+      scroll-snap-align:start; display:flex; align-items:center; justify-content:center; margin-top: 100px;
+    }
+
+    #objectivesSection .fireflies{position:absolute; inset:0; pointer-events:none; z-index:1}
+    #objectivesSection .firefly{
+      position:absolute; width:8px; height:8px; border-radius:50%;
+      background: radial-gradient(circle at 50% 50%, #e9f5ff, #7fb2ff 65%, rgba(127,178,255,0) 70%);
+      box-shadow:0 0 10px rgba(127,178,255,.7), 0 0 22px rgba(127,178,255,.35);
+      opacity:.85; filter:saturate(1.2);
+      animation:obj-float var(--t,18s) ease-in-out infinite alternate;
+    }
+    @keyframes obj-float{
+      0%   { transform: translate(0,0) scale(.95); opacity:.85 }
+      50%  { transform: translate(var(--dx,120px), var(--dy,-90px)) scale(1.05); opacity:.95 }
+      100% { transform: translate(calc(var(--dx,120px) * -0.6), calc(var(--dy,-90px) * -0.6)) scale(1); opacity:.9 }
+    }
+
+    #objectivesSection .eyebrow{
+      color:var(--obj-muted); letter-spacing:.03em; text-align:center; margin-bottom:2vh;
+      font-size:clamp(30px,1.6vw,22px);
+    }
+
+    #objectivesSection #impact{ flex-direction:column; gap:2.5vh; z-index:0; }
+    #objectivesSection .big-number{
+      font-family:"Orbitron"; font-weight:900; line-height:1; letter-spacing:.02em;
+      font-size:clamp(64px,15vw,220px); text-align:center; color:var(--obj-ink);
+      text-shadow:0 0 35px rgba(180,210,255,.25), 0 0 60px rgba(102,170,255,.25);
+    }
+    #objectivesSection .subnote{ color:var(--obj-muted); text-align:center; font-size:clamp(25px,1.05vw,16px) }
+    #objectivesSection .count-underline{
+      height:2px; width:0; margin:8px auto 0; border-radius:2px;
+      background:linear-gradient(90deg, rgba(102,170,255,0), var(--obj-blue), rgba(102,170,255,0));
+      box-shadow:var(--obj-glow);
+    }
+    #objectivesSection .run{ animation:obj-underline 1.2s ease forwards; }
+    @keyframes obj-underline{ from{width:0;opacity:.2} to{width:min(72vw,920px);opacity:1} }
+
+    #objectivesSection #coverage{ align-items:center; gap:6vw; }
+    #objectivesSection .coverage-wrap{ display:grid; grid-template-columns:1fr 420px; gap:6vw; width:100%; }
+    #objectivesSection .coverage-copy{ align-self:center; justify-self:center; max-width:900px; text-align:center; }
+    #objectivesSection .coverage-title{ font-size:clamp(24px,3.2vw,48px); line-height:1.25; color:var(--obj-ink); }
+    #objectivesSection .coverage-p{ margin-top:18px; color:var(--obj-muted); font-size:clamp(25px,1.2vw,18px) }
+    #objectivesSection .donut{ width:420px; height:420px; justify-self:center; align-self:center; filter: drop-shadow(0 12px 24px rgba(102,170,255,.18)); }
+    #objectivesSection .donut text{ font-family:"Orbitron"; fill:var(--obj-ink); font-size:48px; dominant-baseline:middle; text-anchor:middle; }
+
+    #objectivesSection #solution{ justify-content:center; text-align:center; }
+    #objectivesSection .kicker{ color:var(--obj-muted); font-size:clamp(16px,2.2vw,32px); margin-bottom:8px }
+    #objectivesSection .solution{
+      font-family:'Michroma', sans-serif; letter-spacing:.02em; font-size:clamp(28px,4.6vw,64px);
+      display:inline-block; position:relative; padding-bottom:14px; font-weight:700;
+    }
+    #objectivesSection .solution.underline::after{
+      content:""; position:absolute; left:0; right:0; bottom:0; height:3px; width:0; margin-inline:auto;
+      background: linear-gradient(90deg, rgba(102,170,255,.0), var(--obj-blue), rgba(102,170,255,.0));
+      box-shadow: var(--obj-glow); animation: obj-underline 1.2s ease forwards;
+    }
+
+    #objectivesSection .floating-model canvas { animation: obj-floatY 6s ease-in-out infinite; }
+    @keyframes obj-floatY { 0%,100% { transform: translateY(0) } 50% { transform: translateY(-15px) } }
+
+    @media (max-width:980px){
+      #objectivesSection .coverage-wrap{grid-template-columns:1fr; gap:6vh}
+      #objectivesSection .donut{width:320px;height:320px}
+    }
+  </style>
+
+  <div class="fireflies" aria-hidden="true">
+    <div class="firefly" style="top:18%;left:14%; --dx:140px; --dy:-120px; --t:22s;"></div>
+    <div class="firefly" style="top:76%;left:8%;  --dx:120px; --dy:-80px;  --t:19s;"></div>
+    <div class="firefly" style="top:12%;left:78%; --dx:-160px;--dy:80px;   --t:23s;"></div>
+    <div class="firefly" style="top:58%;left:62%; --dx:90px;  --dy:-120px; --t:20s;"></div>
+    <div class="firefly" style="top:30%;left:46%; --dx:-110px;--dy:60px;  --t:21s;"></div>
+    <div class="firefly" style="top:86%;left:82%; --dx:-140px;--dy:-90px; --t:24s;"></div>
+  </div>
+
+  <main>
+    <section id="impact">
+      <div class="eyebrow">A preventable crisis, still claiming lives.</div>
+      <div class="big-number" id="bigNum" data-target="236000">236,000</div>
+      <div class="count-underline" id="countLine"></div>
+      <p class="subnote">deaths / year — ≈ 647 per day by meningitis</p>
+    </section>
+
+    <section id="coverage">
+      <div class="coverage-wrap">
+        <div class="coverage-copy">
+          <h2 class="coverage-title">Current tools avoid only part of the problem</h2>
+          <p class="coverage-p">Resistance of S. pneumoniae has significantly increased</p>
+        </div>
+
+        <svg class="donut" viewBox="0 0 200 200" role="img" aria-label="92 percent">
+          <defs>
+            <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#9fcbff"/>
+              <stop offset="100%" stop-color="#60a5ff"/>
+            </linearGradient>
+          </defs>
+          <circle cx="100" cy="100" r="78" fill="none" stroke="#0d1a2b" stroke-width="10" opacity=".6"/>
+          <g stroke="#2a3d5c" stroke-width="2" opacity=".55">
+            <line x1="100" y1="18"  x2="100" y2="26"/>
+            <line x1="170" y1="56"  x2="164" y2="60"/>
+            <line x1="182" y1="124" x2="174" y2="124"/>
+            <line x1="140" y1="174" x2="136" y2="168"/>
+            <line x1="60"  y1="174" x2="64"  y2="168"/>
+            <line x1="18"  y1="124" x2="26"  y2="124"/>
+            <line x1="30"  y1="56"  x2="36"  y2="60"/>
+          </g>
+          <circle id="arc" cx="100" cy="100" r="78" fill="none"
+                  stroke="url(#g)" stroke-width="10" stroke-linecap="round"
+                  stroke-dasharray="490" stroke-dashoffset="490"
+                  style="filter: drop-shadow(0 0 10px rgba(102,170,255,.45));"/>
+          <text x="100" y="104">92%</text>
+        </svg>
+      </div>
+    </section>
+
+    <section id="solution">
+      <div class="center" style="width:min(1100px,100vw); text-align:center;">
+        <div class="kicker">The solution is</div>
+        <div class="solution" id="solText">Quantum AI driven drug discovery</div>
+        <p class="subnote" style="margin-top:16px">
+      </div>
+    </section>
+
+    <footer style="height:12vh"></footer>
+  </main>
+
+  <div class="objective-row">
+    <div class="objective-text">
+      <p>Bacteria like those causing meningitis are becoming resistant, and current drugs can’t keep up. Drug discovery today is too slow and expensive.</p>
+    </div>
+    <div class="objective-model floating-model" id="model1"></div>
+  </div>
+
+  <div class="objective-row reverse">
+    <div class="objective-text">
+      <p>Qure AI uses AI to design new molecules and quantum computing to confirm their stability, creating faster, smarter antibiotics.</p>
+    </div>
+    <div class="objective-model floating-model" id="model3"></div>
+  </div>
+
+  <script>
+    (() => {
+      const root = document.getElementById('objectivesSection');
+      if (!root) return;
+
+      const dots = root.querySelectorAll('.obj-dot');
+      const sections = root.querySelectorAll('main > section');
+      const countLine = root.querySelector('#countLine');
+      const solText = root.querySelector('#solText');
+      const arc = root.querySelector('#arc');
+      const bigNum = root.querySelector('#bigNum');
+
+      const ARC_FULL = 490;    
+      const ARC_TARGET = 147;   
+      let counted = false;
+
+    
+      dots.forEach(d => {
+        d.addEventListener('click', () => {
+          const t = root.querySelector(d.dataset.target);
+          if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+
+      function animateDonut() {
+        if (!arc) return;
+        arc.style.transition = 'none';
+        arc.style.strokeDashoffset = String(ARC_FULL);
+        void arc.getBoundingClientRect(); 
+        arc.style.transition = 'stroke-dashoffset 1.25s ease';
+        arc.style.strokeDashoffset = String(ARC_TARGET);
+      }
+      const formatInt = n => n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+      function countUpOnce(el, target, ms = 1400) {
+        if (counted) return;
+        counted = true;
+        const start = performance.now();
+        const from = 0;
+        function step(t) {
+          const p = Math.min(1, (t - start) / ms);
+          const val = Math.round(from + (target - from) * p);
+          el.textContent = formatInt(val);
+          if (p < 1) requestAnimationFrame(step);
+          else el.textContent = formatInt(target);
+        }
+        el.textContent = "0";
+        requestAnimationFrame(step);
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          const id = entry.target.id;
+
+          if (entry.isIntersecting) {
+            dots.forEach(d => d.classList.toggle('active', d.dataset.target === '#' + id));
+          }
+
+          if (id === 'impact') {
+            if (entry.isIntersecting) {
+              countLine.classList.remove('run'); void countLine.offsetWidth; countLine.classList.add('run');
+              countUpOnce(bigNum, parseInt(bigNum.dataset.target,10), 1400);
+            } else {
+              countLine.classList.remove('run');
+            }
+          }
+
+          if (id === 'coverage') {
+            if (entry.isIntersecting) animateDonut();
+            else {
+              if (arc) {
+                arc.style.transition = 'none';
+                arc.style.strokeDashoffset = String(ARC_FULL);
+              }
+            }
+          }
+
+          if (id === 'solution') {
+            if (entry.isIntersecting) {
+              solText.classList.remove('underline'); void solText.offsetWidth; solText.classList.add('underline');
+            } else {
+              solText.classList.remove('underline');
+            }
+          }
+        });
+      }, { threshold: .45 });
+
+      sections.forEach(s => io.observe(s));
+
+      if (sections[0]) {
+        dots.forEach(d => d.classList.toggle('active', d.dataset.target === '#' + sections[0].id));
+        countLine.classList.add('run');
+      }
+    })();
+  </script>
+</div>
+
+
+
+    <div class="implementation-section" id="implementationSection">
+      <h2 class="implementation-title">Implementation</h2>
+    </div>
+
+    <div class="steps-container">
+      <div class="connecting-line"></div>
+      
+      <div class="step" data-step="1">
+        <div class="step-circle">1</div>
+        <div class="step-content">
+          <h3 class="step-title">Data Cleaning</h3>
+          <p class="step-description">
+            Cleaned the original databases using python scripts with pandas to parse and remove empty or unknown data and taking only relevant data, all the data was converted to CSV files with proper headings and clear distinctions. Then the CIF files were parsed and converted to CSV's with all their positional data.
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="2">
+        <div class="step-circle">2</div>
+        <div class="step-content">
+          <h3 class="step-title">Machine Leaning</h3>
+          <p class="step-description">
+            We built an SVM model to generate potential meningitis cures, analyzing four bacterial causes. Using features like MIC, IZ, molecular weight, and Lipinski’s Rule of 5, we identified novel, drug-like molecules with promising antibacterial activity.
+          </p>
+        </div>
+      </div>
+
+      <div class="step" data-step="3">
+        <div class="step-circle">3</div>
+        <div class="step-content">
+          <h3 class="step-title">Quantum</h3>
+          <p class="step-description">
+            Implemented the Variational Quantum Eigensolver by finding ground state energy. Used Active Space Reduction to minimize problem set. VQE was used to validate and compare the ground state energies of the existing molecule and the AI-generated molecule.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="coded-section" id="codedSection1">
+      <div class="code-box">
+<pre>threshold = median(Standard Value)
+for each molecule:
+    if Standard Value <= threshold:
+        label = effective (1)
+    else:
+        label = ineffective (0)
+
+for up to max_mutations:
+    randomly choose mutation_type ∈ { add_atom, replace_atom }
+
+    if add_atom:
+        pick random_atom ∈ { C, N, O, F, Cl }
+        connect it to random_position in molecule
+
+    if replace_atom:
+        pick random_position in molecule
+        pick new_atom ∈ { C, N, O, S }
+        replace atom at that position
+
+
+Molecular Weight = random normal(mean, std of dataset)
+AlogP = random normal(mean, std of dataset)
+RO5 Violations = random choice from dataset values
+Standard Type = random choice from dataset types
+Standard Value = random choice from dataset values of that type
+
+
+x = transform_row(new_molecule)
+probability = model.predict_proba(x)
+
+if probability > 0.6:
+    accept as "Generated Candidate"
+else:
+    discard
+</pre>
+      </div>
+      <div class="explanation-box">
+        <h2>Code Snippets - Machine Learning</h2>
+        <br>
+        <p>This project trains Support Vector Machines (SVMs) on bacterial drug datasets by converting molecular and experimental properties into numeric features. Molecules are labeled effective or ineffective based on median activity values, enabling the SVM to learn patterns that distinguish promising drug candidates.<br><br>
+          Using RDKit, the system mutates existing SMILES strings, randomly sampling molecular properties to generate realistic new compounds. Each candidate is evaluated by the trained SVM, and only those with predicted effectiveness above 60% are retained. The pipeline outputs novel drug-like molecules, storing results per bacterium for further analysis.</p>
+      </div>
+    </div>
+
+    <div class="coded-section" id="codedSection2">
+      <div class="explanation-box">
+        <h2>Code Snippets - Quantum Computing</h2>
+        <br>
+        <p>The Variational Quantum Eigensolver (VQE) algorithm finds molecular ground state energies. It reads molecular coordinates, generates a quantum Hamiltonian, creates a parameterized quantum circuit (ansatz), then uses classical optimization to minimize energy through iterative parameter adjustments.</p>
+      </div>
+      <div class="code-box">
+<pre>PROGRAM VQE
+INPUT: csv_file_path (molecular coordinates)
+OUTPUT: convergence_plot, energy_data
+
+BEGIN
+    // Initialize parameters
+    max_iterations:10
+    ansatz_repetitions: 2
+    energy_history: empty_list
+    
+    // Step 1: Generate Hamiltonian
+    PRINT "Generating molecular Hamiltonian..."
+    molecular_data: READ_CSV(csv_file_path)
+    hamiltonian: generate_hamiltonian(molecular_data)
+    num_qubits: calculate_qubits_needed(molecular_data)
+    num_electrons: count_active_electrons(molecular_data)
+    
+    // Step 2: Create Quantum Ansatz
+    PRINT "Creating quantum ansatz..."
+    ansatz: create_ansatz(num_qubits, num_electrons, ansatz_repetitions)
+    initial_parameters: random_parameters(ansatz.num_parameters)
+    
+    // Step 3: VQE Optimization Loop
+    PRINT "Running VQE optimization..."
+    current_parameters: initial_parameters
+    
+    FOR iteration = 1 TO max_iterations DO
+        // Evaluate energy expectation value
+        quantum_state: ansatz.execute(current_parameters)
+        energy: expectation_value(hamiltonian, quantum_state)
+        energy_history.append(energy)
+        
+        // Classical optimization step
+        gradient: compute_gradient(energy, current_parameters)
+        current_parameters: update_parameters(current_parameters, gradient)
+        
+        PRINT "Iteration", iteration, "Energy:", energy
+    END FOR
+    
+    // Results processing
+    optimal_energy: minimum(energy_history)
+    execution_time: current_time() - start_time
+    molecular_formula: create_formula(molecular_data)
+    
+    // Generate outputs
+    PRINT "Saving results..."
+    SAVE_CSV(energy_history, "energy_convergence.csv")
+    
+    CREATE_PLOT BEGIN
+        x_axis: [1, 2, ..., length(energy_history)]
+        PLOT_LINE(x_axis, energy_history)
+        ADD_HORIZONTAL_LINE(optimal_energy)
+        SET_LABELS("Function Evaluation", "Energy (Hartree)")
+        SET_TITLE("VQE Energy Convergence for " + molecular_formula)
+        SAVE_PLOT("vqe_results.png")
+    END CREATE_PLOT
+    
+    // Final summary
+    PRINT "Simulation Complete!"
+    PRINT "Molecular formula:", molecular_formula
+    PRINT "Ground state energy:", optimal_energy, "Hartree"
+    PRINT "Execution time:", execution_time, "seconds"
+    PRINT "Total evaluations:", length(energy_history)
+END
+</pre>
+      </div>
+    </div>
+
+<div class="results-section" id="resultsSection">
+  <h2 class="results-title">Results</h2>
+
+  <div class="results-grid">
+    <div class="result-card">
+      <div class="results-chart-title">Cefotaxime Sodium</div>
+      <canvas id="cefotaximeChart"></canvas>
+      <img src="media/Existing_Structure.png" alt="Existing Molecule Structure" class="result-image" />
+    </div>
+
+    <div class="result-card">
+      <div class="results-chart-title">Generated Molecule</div>
+      <canvas id="generatedChart"></canvas>
+      <img src="media/AI_Generated_Structure.png" alt="AI Generated Molecule Structure" class="result-image" />
+    </div>
+  </div>
+</div>
+
+
+<div class="results-overview-card">
+    <div class="overview-content">
+      <h3 class="overview-title">Results</h3>
+      <p class="overview-text">
+        We implemented the VQE algorithm by using active site reduction methods to find the ground state energy of the molecules. The quantum algorithm used a maximum of 10 iterations and approximately 10-20 qubits for a simulation. We simulated Cefotaxime sodium, a molecule that is effective in targeting Streptococcus pneumoniae. The generated molecule for targeting Streptococcus pneumoniae achieved a significantly lower ground state energy than the existing drug. This shows that the machine learning model is generating highly stable drugs.
+      </p>
+      <div class="overview-highlights">
+        <div class="highlight-item">
+          <span class="highlight-number">1.98x</span>
+          <span class="highlight-label">Lower Ground State Energy</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-number">22</span>
+          <span class="highlight-label">Novel Compounds</span>
+        </div>
+        <div class="highlight-item">
+          <span class="highlight-number">90%+</span>
+          <span class="highlight-label">Avg Prediction Accuracy</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <section id="goal">
+  <div class="eyebrow">The goal is</div>
+  <div class="big-number" id="goalCounter" data-start="236000">236,000</div>
+  <div class="count-underline" id="goalLine"></div>
+  <div class="eyebrow">deaths by meningitis</div> 
+</section>
+
+
+
+
+<style>
+.results-overview-card {
+  width: 100%;
+  max-width: 1400px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 3rem;
+  margin: 0 auto 4rem auto;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.results-overview-card:hover {
+  transform: translateY(-8px);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(0, 255, 255, 0.4);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.results-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-top: 3rem;
+}
+
+.result-card {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  padding: 2rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.result-card canvas {
+  width: 100% !important;
+  height: 400px !important;
+}
+
+.results-chart-title {
+  font-family: 'Michroma', sans-serif;
+  letter-spacing: .02em;
+  font-size: clamp(20px, 2.5vw, 36px); 
+  display: inline-block;
+  position: relative;
+  padding-bottom: 10px;
+  font-weight: 700;
+  color: #ffffff;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.result-image {
+  margin-top: 1.5rem;
+  width: 100%;
+  max-height: 280px;
+  object-fit: contain;
+  transition: transform 0.3s ease;
+}
+
+.result-image:hover {
+  transform: scale(1.03);
+}
+
+
+
+
+.overview-content {
+  text-align: center;
+}
+
+.overview-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+}
+
+.overview-text {
+  font-family: 'Michroma', sans-serif;
+  font-size: 1.1rem;
+  color: #cccccc;
+  line-height: 1.8;
+  margin-bottom: 2.5rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.overview-highlights {
+  display: flex;
+  justify-content: center;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+
+.highlight-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.highlight-number {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 900;
+  color: #00ffff;
+  text-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+.highlight-label {
+  font-family: 'Michroma', sans-serif;
+  font-size: 1rem;
+  color: #ffffff;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+}
+
+#goal {
+  flex-direction: column;
+  gap: 2.5vh;
+  text-align: center;
+  margin: 4rem 0;
+}
+
+#goal .big-number {
+  font-family: "Orbitron", sans-serif;
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: .02em;
+  font-size: clamp(64px, 15vw, 220px);
+  color: var(--obj-ink);
+  text-shadow: 0 0 35px rgba(180,210,255,.25),
+               0 0 60px rgba(102,170,255,.25);
+}
+
+#goal .count-underline {
+  height: 2px;
+  width: 0;
+  margin: 8px auto 0;
+  border-radius: 2px;
+  background: linear-gradient(90deg, rgba(102,170,255,0), var(--obj-blue), rgba(102,170,255,0));
+  box-shadow: var(--obj-glow);
+}
+
+#goal .run {
+  animation: obj-underline 1.2s ease forwards;
+}
+
+#goal .eyebrow {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(32px, 4vw, 54px); 
+  font-weight: 700;
+  color: var(--obj-muted);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+#goal .goal-subnote {
+  margin-top: 12px;
+  font-family: 'Michroma', sans-serif;
+  font-size: clamp(20px, 1.2vw, 16px);
+  color: var(--obj-muted);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+#goal .goal-subnote.show {
+  opacity: 1;
+}
+
+#goal .eyebrow:last-of-type {
+  margin-top: 1.2rem;
+}
+
+
+
+@keyframes obj-underline {
+  from { width: 0; opacity: .2 }
+  to   { width: min(72vw, 920px); opacity: 1 }
+}
+
+
+@media (max-width: 900px) {
+  .results-overview-card {
+    padding: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .overview-highlights {
+    gap: 2rem;
+  }
+  
+  .highlight-number {
+    font-size: 2rem;
+  }
+  
+  .highlight-label {
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .overview-highlights {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .results-overview-card {
+    padding: 1.5rem;
+  }
+}
+</style>
+
+    <footer class="footer">
+      <div class="footer-content">
+        <div class="footer-left">
+          <h3 class="footer-logo">Qure AI</h3>
+          <p class="footer-tagline">Harnessing Machine Learning to Defeat Meningitis</p>
+          <p class="footer-description">
+            Pioneering the future of drug discovery through advanced machine learning algorithms and computational biology. Join us in revolutionizing the fight against bacterial infections.
+          </p>
+        </div>
+        <div class="footer-right">
+          <h4 class="footer-links-title">Connect With Us</h4>
+          <div class="footer-links">
+            <a href="https://devpost.com/placeholder" class="footer-link" target="_blank">
+              <svg class="footer-link-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M6.002 1.61L0 12.004L6.002 22.39h11.996L24 12.004L17.998 1.61H6.002zm1.593 4.084h3.947c3.605 0 6.276 1.695 6.276 6.31c0 4.436-3.21 6.302-6.456 6.302H7.595V5.694zm2.517 2.449v7.714h1.241c2.646 0 3.862-1.55 3.862-3.861c.009-2.569-1.096-3.853-3.767-3.853H10.112z"/>
+              </svg>
+              Devpost
+            </a>
+            <a href="https://github.com/adityasunke/QureAI" class="footer-link" target="_blank">
+              <svg class="footer-link-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+              </svg>
+              GitHub
+            </a>
+            <a href="https://youtube.com/placeholder" class="footer-link" target="_blank">
+              <svg class="footer-link-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+              </svg>
+              YouTube
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          © 2025 Qure AI Team. All rights reserved. | Advancing ML-driven drug discovery.
+        </p>
+      </div>
+    </footer>
+  </div>
+
+  <div id="scrollTopBtn">
+    <img src="/media/uparrow.png" alt="Scroll to top" />
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.cells.min.js"></script>
+  <script>
+    var setVanta = () => {
+      if (window.VANTA) window.VANTA.CELLS({
+        el: "#backgroundContainer",
+        mouseControls: true,
+        touchControls: true,
+        gyroControls: false,
+        minHeight: 200.00,
+        minWidth: 200.00,
+        scale: 1.00,
+        color1: 0x3688cf,
+        color2: 0x7e7e7e
+      })
+    }
+    setVanta()
+  </script>
+
+  <script>
+    document.getElementById('learnMore').addEventListener('click', function() {
+      document.getElementById('aboutSection').scrollIntoView({ behavior: 'smooth' });
+    });
+
+    const scrollTopBtn = document.getElementById("scrollTopBtn");
+    const overlay = document.getElementById("backgroundOverlay");
+
+    function handleScrollAnimations() {
+      const steps = document.querySelectorAll('.step');
+      
+      steps.forEach((step, index) => {
+        const stepRect = step.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (stepRect.top < windowHeight * 0.6 && stepRect.bottom > windowHeight * 0.4) {
+          const circle = step.querySelector('.step-circle');
+          const content = step.querySelector('.step-content');
+          
+          if (!circle.classList.contains('animate')) {
+            circle.classList.add('animate');
+            
+            setTimeout(() => {
+              content.classList.add('animate');
+            }, 300);
+          }
+        }
+      });
+    }
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > window.innerHeight * 0.8) {
+        scrollTopBtn.style.opacity = "1";
+        scrollTopBtn.style.pointerEvents = "auto";
+      } else {
+        scrollTopBtn.style.opacity = "0";
+        scrollTopBtn.style.pointerEvents = "none";
+      }
+
+      const scrollY = window.scrollY;
+      const vh = window.innerHeight;
+      let progress = Math.min(scrollY / vh, 1);
+      overlay.style.opacity = (progress * 0.7).toFixed(2);
+
+      handleScrollAnimations();
+    });
+
+    scrollTopBtn.addEventListener("click", () => {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    handleScrollAnimations();
+
+class TeamCarousel {
+  constructor() {
+    this.carousel = document.getElementById('teamCarousel');
+    this.navDots = document.querySelectorAll('.nav-dot');
+    this.prevBtn = document.getElementById('prevBtn');
+    this.nextBtn = document.getElementById('nextBtn');
+    this.currentIndex = 0;
+    this.totalCards = 4;
+    this.autoRotateInterval = 2000; 
+    this.autoRotateTimer = null;
+
+    this.init();
+  }
+
+  init() {
+    this.setupEventListeners();
+    this.startAutoRotate();
+  }
+
+  setupEventListeners() {
+    this.navDots.forEach((dot, index) => {
+      dot.addEventListener('click', () => {
+        this.goToSlide(index);
+        this.resetAutoRotate();
+      });
+    });
+
+    this.prevBtn.addEventListener('click', () => {
+      this.prevSlide();
+      this.resetAutoRotate();
+    });
+    this.nextBtn.addEventListener('click', () => {
+      this.nextSlide();
+      this.resetAutoRotate();
+    });
+
+    [this.carousel, this.prevBtn, this.nextBtn].forEach(el => {
+      el.addEventListener('mouseenter', () => this.pauseAutoRotate());
+      el.addEventListener('mouseleave', () => this.startAutoRotate());
+    });
+
+    let startX = 0, startY = 0;
+    this.carousel.addEventListener('touchstart', (e) => {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      this.pauseAutoRotate();
+    });
+    this.carousel.addEventListener('touchend', (e) => {
+      const endX = e.changedTouches[0].clientX;
+      const diffX = startX - endX;
+      if (Math.abs(diffX) > 50) {
+        diffX > 0 ? this.nextSlide() : this.prevSlide();
+      }
+      this.startAutoRotate();
+    });
+  }
+
+  goToSlide(index) {
+    this.currentIndex = index % this.totalCards; 
+    const rotateY = -90 * this.currentIndex;
+    this.carousel.style.transform = `rotateY(${rotateY}deg)`;
+    this.updateNavDots();
+  }
+
+  nextSlide() {
+    this.goToSlide(this.currentIndex + 1);
+  }
+
+  prevSlide() {
+    this.goToSlide(this.currentIndex - 1 + this.totalCards);
+  }
+
+  updateNavDots() {
+    this.navDots.forEach((dot, index) => {
+      dot.classList.toggle('active', index === this.currentIndex);
+    });
+  }
+
+  startAutoRotate() {
+    this.pauseAutoRotate(); 
+    this.autoRotateTimer = setInterval(() => this.nextSlide(), this.autoRotateInterval);
+  }
+
+  pauseAutoRotate() {
+    if (this.autoRotateTimer) {
+      clearInterval(this.autoRotateTimer);
+      this.autoRotateTimer = null;
+    }
+  }
+
+  resetAutoRotate() {
+    this.startAutoRotate();
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  new TeamCarousel();
+});
+
+  </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+<script>
+  function loadModel(containerId, modelPath, manualScale = 1) {
+    const container = document.getElementById(containerId);
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const light = new THREE.HemisphereLight(0xffffff, 0x444444, 1.2);
+    scene.add(light);
+
+    const loader = new THREE.GLTFLoader();
+    loader.load(modelPath, (gltf) => {
+      const model = gltf.scene;
+      scene.add(model);
+
+      const box = new THREE.Box3().setFromObject(model);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const desiredSize = 3;
+      const scale = (desiredSize / maxDim) * manualScale;
+      model.scale.set(scale, scale, scale);
+
+      const center = box.getCenter(new THREE.Vector3());
+      model.position.sub(center);
+    });
+
+    camera.position.set(0, 1, 5);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enablePan = false;
+    controls.minDistance = 2;
+    controls.maxDistance = 10;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 2.0;
+    controls.enableZoom = false;
+
+    function animate() {
+      requestAnimationFrame(animate);
+      controls.update();
+      renderer.render(scene, camera);
+    }
+    animate();
+  }
+
+  loadModel("model1", "/media/brain_hologram.glb", 1.5);
+  loadModel("model3", "/media/sucrose_molecule.glb", 1.2);
+</script>
+
+<script>
+async function loadCSV(path) {
+  const response = await fetch(path);
+  const text = await response.text();
+  const rows = text.trim().split("\n").slice(1); 
+  const labels = [];
+  const values = [];
+
+  rows.forEach(row => {
+    const [funcEval, energy] = row.split(",");
+    labels.push(parseInt(funcEval));
+    values.push(parseFloat(energy));
+  });
+
+  return { labels, values };
+}
+
+async function renderCharts() {
+  const cefotaxime = await loadCSV("data/cefotaxime_sodium_Sp_energy.csv");
+  const generated = await loadCSV("data/generated_streptococcus_pneumoniae_001_3d_coordinates_energy.csv");
+
+  new Chart(document.getElementById("cefotaximeChart"), {
+    type: "line",
+    data: {
+      labels: cefotaxime.labels,
+      datasets: [{
+        label: "Energy (Hartree)",
+        data: cefotaxime.values,
+        borderColor: "#00ffff",
+        backgroundColor: "rgba(0,255,255,0.2)",
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: "#ffffff" } } },
+      scales: {
+        x: { ticks: { color: "#ffffff" }, title: { display: true, text: "Function Evaluation", color: "#ffffff" } },
+        y: { ticks: { color: "#ffffff" }, title: { display: true, text: "Energy (Hartree)", color: "#ffffff" } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("generatedChart"), {
+    type: "line",
+    data: {
+      labels: generated.labels,
+      datasets: [{
+        label: "Energy (Hartree)",
+        data: generated.values,
+        borderColor: "#ff00ff",
+        backgroundColor: "rgba(255,0,255,0.2)",
+        tension: 0.25
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { labels: { color: "#ffffff" } } },
+      scales: {
+        x: { ticks: { color: "#ffffff" }, title: { display: true, text: "Function Evaluation", color: "#ffffff" } },
+        y: { ticks: { color: "#ffffff" }, title: { display: true, text: "Energy (Hartree)", color: "#ffffff" } }
+      }
+    }
+  });
+}
+
+renderCharts();
+</script>
+
+<script>
+function countDownOnce(el, start, end, ms = 2000) {
+  let startTimestamp = null;
+  function step(timestamp) {
+    if (!startTimestamp) startTimestamp = timestamp;
+    const progress = Math.min((timestamp - startTimestamp) / ms, 1);
+    const val = Math.round(start - (start - end) * progress);
+    el.textContent = val.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (progress < 1) {
+      requestAnimationFrame(step);
+    } else {
+      document.getElementById("goalSubnote").textContent = "Deaths by Meningitis";
+      document.getElementById("goalSubnote").classList.add("show");
+    }
+  }
+  requestAnimationFrame(step);
+}
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const goalNum = document.getElementById("goalCounter");
+  const goalLine = document.getElementById("goalLine");
+
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting) {
+      goalLine.classList.add("run");
+      countDownOnce(goalNum, 236000, 0, 2000);
+      observer.disconnect();
+    }
+  }, { threshold: 0.5 });
+
+  observer.observe(goalNum);
+});
+</script>
+</body>
+</html>
