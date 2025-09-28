@@ -89,8 +89,8 @@ Python, HTML, CSS, Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib
 ## Results
 The VQE quantum simulation results demonstrate successful energy convergence for both existing and AI-generated molecules:
 <p align="center">
-  <img src="Quantum/Outputs/cefotaxime_sodium_Sp_vqe_results.png" alt="Existing Molecule (Cefotaxime sodium)" width="420"/>
-  <img src="Quantum/Outputs/generated_streptococcus_pneumoniae_001_3d_coordinates_vqe_results.png" alt="AI-Generated Molecule" width="420"/>
+  <img src="Quantum/Outputs_Haemophilus_influenzae/cefotaxime_sodium_Sp_vqe_results.png" alt="Existing Molecule (Cefotaxime sodium)" width="420"/>
+  <img src="Quantum/Outputs_Haemophilus_influenzae/generated_streptococcus_pneumoniae_001_3d_coordinates_vqe_results.png" alt="AI-Generated Molecule" width="420"/>
 </p>
 <p align="center">
   <em><strong>(a) Existing Molecule (Cefotaxime sodium)</strong> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <strong>(b) AI-Generated Molecule</strong></em>
