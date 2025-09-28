@@ -1,5 +1,5 @@
 """
-Molecular Hamiltonian Generator for Any Molecule
+Molecular Hamiltonian Generator
 Generates quantum Hamiltonians from CSV molecular coordinates
 """
 
@@ -8,24 +8,12 @@ import pandas as pd
 import os
 from typing import List, Tuple, Dict
 import warnings
-
-# PySCF imports
 from pyscf import gto, scf, mcscf, ao2mo
-
-# Qiskit imports
 from qiskit.quantum_info import SparsePauliOp
 
 
 def parse_csv_geometry(csv_path: str) -> Tuple[List, Dict]:
-    """
-    Parse molecular geometry from CSV file.
-    
-    Args:
-        csv_path: Path to CSV file with Atom,x,y,z format
-        
-    Returns:
-        Tuple of (atom_list, properties)
-    """
+    # Parse molecular geometry from CSV file.
     if not os.path.exists(csv_path):
         raise FileNotFoundError(f"CSV file not found: {csv_path}")
     
@@ -39,9 +27,6 @@ def parse_csv_geometry(csv_path: str) -> Tuple[List, Dict]:
     
     # Validate required columns
     required_cols = ['atom', 'x', 'y', 'z']
-    for col in required_cols:
-        if col not in df.columns:
-            raise ValueError(f"Required column '{col}' not found in CSV. Available columns: {list(df.columns)}")
     
     # Build atom list
     atom_list = []
@@ -69,15 +54,8 @@ def parse_csv_geometry(csv_path: str) -> Tuple[List, Dict]:
 
 
 def jordan_wigner_transformation(n_qubits: int) -> Tuple[List[SparsePauliOp], List[SparsePauliOp]]:
-    """
-    Generate creation and annihilation operators using Jordan-Wigner transformation.
-    
-    Args:
-        n_qubits: Number of qubits (spin orbitals)
-        
-    Returns:
-        Tuple of (creation_operators, annihilation_operators)
-    """
+    # Generate creation and annihilation operators using Jordan-Wigner transformation.
+
     creation_ops = []
     
     for p in range(n_qubits):
@@ -87,7 +65,7 @@ def jordan_wigner_transformation(n_qubits: int) -> Tuple[List[SparsePauliOp], Li
         for k in range(p):
             pauli_string[k] = "Z"
         
-        # Creation operator: c† = (X + iY)/2
+        # Creation operator
         pauli_string[p] = "X"
         x_string = "".join(reversed(pauli_string))
         
@@ -100,23 +78,15 @@ def jordan_wigner_transformation(n_qubits: int) -> Tuple[List[SparsePauliOp], Li
         ])
         creation_ops.append(c_p)
     
-    # Annihilation operators are Hermitian conjugates
+    # Annihilation operators
     annihilation_ops = [c_op.adjoint() for c_op in creation_ops]
     
     return creation_ops, annihilation_ops
 
 
 def cholesky_decomposition(V: np.ndarray, eps: float = 1e-6) -> Tuple[np.ndarray, int]:
-    """
-    Cholesky decomposition for two-electron integrals.
-    
-    Args:
-        V: Two-electron integral tensor
-        eps: Convergence threshold
-        
-    Returns:
-        Tuple of (L, ng) where L are Cholesky vectors and ng is the number of vectors
-    """
+    # Cholesky decomposition for two-electron integrals.
+
     no = V.shape[0]
     chmax = 20 * no
     ng = 0
@@ -149,17 +119,8 @@ def cholesky_decomposition(V: np.ndarray, eps: float = 1e-6) -> Tuple[np.ndarray
 
 
 def build_molecular_hamiltonian_from_integrals(ecore: float, h1e: np.ndarray, h2e: np.ndarray) -> SparsePauliOp:
-    """
-    Build molecular Hamiltonian from integral data.
-    
-    Args:
-        ecore: Core energy
-        h1e: One-electron integrals
-        h2e: Two-electron integrals
-        
-    Returns:
-        SparsePauliOp representing the molecular Hamiltonian
-    """
+    # Build molecular Hamiltonian from integral data.
+
     ncas = h1e.shape[0]
     n_qubits = 2 * ncas
     
@@ -219,17 +180,8 @@ def build_molecular_hamiltonian_from_integrals(ecore: float, h1e: np.ndarray, h2
 
 
 def determine_active_space(total_orbitals: int, total_electrons: int, spin: int = 0) -> Tuple[int, Tuple[int, int]]:
-    """
-    Automatically determine active space size (kept small for efficiency).
-    
-    Args:
-        total_orbitals: Total number of molecular orbitals
-        total_electrons: Total number of electrons
-        spin: Molecular spin
-        
-    Returns:
-        Tuple of (ncas, nelecas)
-    """
+    # Automatically determine active space size (kept small for efficiency).
+
     # Conservative active space selection
     if total_orbitals > 50:
         ncas = 4  # Very small for large molecules
@@ -260,15 +212,8 @@ def determine_active_space(total_orbitals: int, total_electrons: int, spin: int 
 
 
 def generate_hamiltonian(csv_path: str) -> Tuple[SparsePauliOp, Dict]:
-    """
-    Main function: Generate molecular Hamiltonian from CSV coordinates.
-    
-    Args:
-        csv_path: Path to CSV file with molecular coordinates
-        
-    Returns:
-        Tuple of (hamiltonian, properties)
-    """
+    # Main function: Generate molecular Hamiltonian from CSV coordinates.
+
     print("=" * 60)
     print("GENERATING MOLECULAR HAMILTONIAN")
     print("=" * 60)

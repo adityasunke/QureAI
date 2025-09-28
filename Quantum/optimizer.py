@@ -15,18 +15,9 @@ from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
 
 
 class VQEOptimizer:
-    """
-    COBYLA-based VQE optimizer with detailed progress tracking.
-    """
-    
     def __init__(self, max_iterations: int = 10, tolerance: float = 1e-6):
-        """
-        Initialize the VQE optimizer.
-        
-        Args:
-            max_iterations: Maximum COBYLA iterations
-            tolerance: Convergence tolerance
-        """
+        # Initialize the VQE optimizer.
+
         self.max_iterations = max_iterations
         self.tolerance = tolerance
         self.backend = StatevectorSimulator()
@@ -43,16 +34,8 @@ class VQEOptimizer:
         print(f"  Backend: {self.backend.name}")
     
     def create_cost_function(self, ansatz: QuantumCircuit, hamiltonian: SparsePauliOp) -> Callable:
-        """
-        Create the cost function for VQE optimization.
-        
-        Args:
-            ansatz: Parameterized quantum circuit
-            hamiltonian: Molecular Hamiltonian
-            
-        Returns:
-            Cost function for optimization
-        """
+        # Create the cost function for VQE optimization.
+
         # Create estimator
         estimator = BackendEstimatorV2(backend=self.backend)
         
@@ -108,16 +91,8 @@ class VQEOptimizer:
         return cost_function
     
     def optimize_vqe(self, ansatz: QuantumCircuit, hamiltonian: SparsePauliOp) -> Tuple[float, np.ndarray, List[float]]:
-        """
-        Run VQE optimization using COBYLA.
-        
-        Args:
-            ansatz: Parameterized quantum circuit
-            hamiltonian: Molecular Hamiltonian
-            
-        Returns:
-            Tuple of (optimal_energy, optimal_parameters, energy_history)
-        """
+        # Run VQE optimization using COBYLA.
+
         print("=" * 60)
         print("VQE OPTIMIZATION")
         print("=" * 60)
@@ -201,17 +176,8 @@ class VQEOptimizer:
 
 
 def optimize_vqe(ansatz: QuantumCircuit, hamiltonian: SparsePauliOp, max_iterations: int = 10) -> Tuple[float, np.ndarray, List[float]]:
-    """
-    Main function: Optimize VQE using COBYLA.
-    
-    Args:
-        ansatz: Parameterized quantum circuit
-        hamiltonian: Molecular Hamiltonian
-        max_iterations: Maximum optimization iterations
-        
-    Returns:
-        Tuple of (optimal_energy, optimal_parameters, energy_history)
-    """
+    # Main function: Optimize VQE using COBYLA.
+
     optimizer = VQEOptimizer(max_iterations=max_iterations, tolerance=1e-6)
     return optimizer.optimize_vqe(ansatz, hamiltonian)
 

@@ -10,16 +10,8 @@ from qiskit.circuit import ParameterVector
 
 
 def create_hartree_fock_state(num_qubits: int, num_electrons: Tuple[int, int]) -> QuantumCircuit:
-    """
-    Create Hartree-Fock reference state.
-    
-    Args:
-        num_qubits: Number of qubits
-        num_electrons: (alpha, beta) electrons in active space
-        
-    Returns:
-        QuantumCircuit with HF state preparation
-    """
+    # Create Hartree-Fock reference state.
+
     hf_circuit = QuantumCircuit(num_qubits)
     
     n_alpha, n_beta = num_electrons
@@ -37,17 +29,8 @@ def create_hartree_fock_state(num_qubits: int, num_electrons: Tuple[int, int]) -
 
 
 def create_ansatz(num_qubits: int, num_electrons: Tuple[int, int], reps: int = 2) -> QuantumCircuit:
-    """
-    Create EfficientSU2 ansatz with Hartree-Fock initialization.
-    
-    Args:
-        num_qubits: Number of qubits
-        num_electrons: (alpha, beta) electrons in active space
-        reps: Number of repetition layers
-        
-    Returns:
-        Parameterized quantum circuit
-    """
+    # Create EfficientSU2 ansatz with Hartree-Fock initialization.
+
     print(f"Creating EfficientSU2 ansatz:")
     print(f"  Qubits: {num_qubits}")
     print(f"  Electrons: {num_electrons}")
