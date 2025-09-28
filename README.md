@@ -1,9 +1,9 @@
-# 🧬 Qure AI  
+# Qure AI  
 *AI + Quantum Computing for Accelerated Drug Discovery Against Meningitis*
 
 ---
 
-## 🚀 Project Overview
+## Project Overview
 **Qure AI** is a hybrid **AI + Quantum** pipeline designed to discover and validate potential drug molecules targeting the bacteria that cause **meningitis**.  
 
 - **AI/ML Component**: A machine learning model (Support Vector Machine) is trained on molecular datasets (sourced from **ChEMBL**) to identify effective drug candidates. We also use generative AI to propose **novel SMILES strings** as potential cures.  
@@ -13,7 +13,7 @@ This project demonstrates the **synergy of machine learning and quantum simulati
 
 ---
 
-## 🧠 Motivation
+## Motivation
 Meningitis remains a **critical global health burden**:  
 - Every year, **236,000 people die** of meningitis.  
 - Over **2 million new cases** are diagnosed annually.  
@@ -25,7 +25,7 @@ By integrating AI and quantum computing, **Qure AI** aims to accelerate drug dis
 
 ---
 
-## 🔬 Target Bacteria
+## Target Bacteria
 We studied molecules that attack **four major bacterial pathogens** responsible for meningitis:  
 - *Neisseria meningitidis*  
 - *Streptococcus pneumoniae*  
@@ -34,7 +34,7 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
 
 ---
 
-## 📊 Dataset
+## Dataset
 - **Source**: [ChEMBL Database](https://www.ebi.ac.uk/chembl/)  
 - **Features used**:  
   - SMILES strings  
@@ -44,20 +44,20 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
   - Selective Ratios  
   - IZ (Inhibition Zone)  
   - IC50 values  
-  - Log~10~CFU  
+  - Log<sub>10</sub>CFU  
   - AlogP  
   - Lipinski’s Rule of 5  
 
 ---
 
-## 🧠 Machine Learning Component
+## Machine Learning Component
 - **Model Used**: Support Vector Machine (SVM)  
 - **Objective**: Classify molecules as effective/ineffective against target bacteria  
 - **Generative AI**: Produce **novel SMILES molecules** with drug-like properties  
 
 ---
 
-## ⚛️ Quantum Validation (VQE)
+## Quantum Validation (VQE)
 - **Framework**: Qiskit + PySCF  
 - **Process**:  
   1. Convert molecules into Hamiltonians  
@@ -69,7 +69,7 @@ We studied molecules that attack **four major bacterial pathogens** responsible 
 
 ---
 
-## 🔄 Pipeline Workflow
+## Pipeline Workflow
 ```mermaid
 flowchart TD
     A[📂 Clean Dataset] --> B[🤖 Train SVM Model on Molecular Features]
@@ -77,15 +77,16 @@ flowchart TD
     C --> D[🧬 Generate Novel Molecules via AI]
     D --> E[📊 Compare Novel vs Existing Molecules]
     E --> F[✅ Validate Stability using Energy Levels]
+```
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 - **Languages**: Python, HTML, CSS  
 - **Libraries**: Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib  
 
 ---
 
-## 📊 Results
+## Results
 *(To Be Determined – Hackathon Ongoing)*  
 
 Planned outputs:  
