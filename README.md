@@ -81,8 +81,8 @@ flowchart TD
 ---
 
 ## Tech Stack
-- **Languages**: Python, HTML, CSS  
-- **Libraries**: Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib  
+- **Languages**: Python, HTML, CSS
+- **Libraries**: Qiskit, PySCF, Pandas, RDKit, NumPy, scikit-learn, Matplotlib, three.js, chart.js, vanta.js
 
 ---
 
